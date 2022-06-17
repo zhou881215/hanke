@@ -14,38 +14,51 @@
   background-color: @LightColor;
 
   .login-header {
-    margin-bottom: 2vh;
-    text-align: center;
+    width: 570px;
+    margin: 0 auto;
+    margin-bottom: 4vh;
+
+    .logo-img {
+      width: 180px;
+    }
   }
 
   .login-main {
-    width: 370px;
+    width: 570px;
     margin: 0 auto;
+    padding: 50px 100px 12px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
 
     .el-form-item {
       margin-bottom: 2.5vh;
-    }
-
-    .full-btn {
-      width: 100%;
-    }
-
-    .link-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
 
       a {
-        margin-left: 12px;
+        color: @mainColor;
+      }
+
+      .flex-layout {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .full-btn {
+        width: 100%;
+      }
+
+      .register {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
-  }
 
-  .login-footer {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    line-height: 3em;
-    transform: translateX(-50%);
+    .remember {
+      margin-bottom: 5vh;
+    }
   }
 }

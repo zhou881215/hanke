@@ -2,8 +2,9 @@
  * @Author: Cram
  * @Date: 2022-06-17 09:50:11
  */
-import { UserLocal, ILoginUser, IUserInfo } from "./constant";
-// import * as userServ from "../api/user";
+import { UserLocal } from "./constant";
+import type { ILoginUser, IUserInfo } from "./constant";
+import { delay } from "../api/login";
 
 const state: ILoginUser = {
   userInfo: null as IUserInfo & null,
@@ -27,7 +28,7 @@ export default {
      */
     async loginIn({ commit }: any, { loginId, loginPwd }: any) {
       commit("setLoading", true);
-      // const user = await userServ.login(loginId, loginPwd);
+      await delay(1000);
       const currentUser: IUserInfo = {
         userName: "Cram" + Math.random(),
         userRank: Math.random() > 0.8,
@@ -42,22 +43,30 @@ export default {
      */
     async loginOut({ commit }: any) {
       commit("setLoading", true);
-      // await userServ.loginOut();
+      await delay(1000);
       commit("setUser", null);
       commit("setLoading", false);
       localStorage.removeItem(UserLocal);
     },
     /**
-     * 是否已登录
+     * 注册
      */
-    loginOrNot({ commit }: any) {
-      const localUserInfo: string | null = localStorage.getItem(UserLocal);
-      try {
-        const currentUser = JSON.parse(localUserInfo as string);
-        commit("setUser", currentUser);
-      } catch (error) {
-        commit("setUser", null);
-      }
+    async userRegister({ commit }: any, payload: any) {
+      commit("setLoading", true);
+      await delay(1000);
+      const mockResult: boolean = Math.random() > 0.5;
+      commit("setLoading", false);
+      return mockResult;
+    },
+    /**
+     * 找回密码
+     */
+    async recoverPass({ commit }: any, payload: any) {
+      commit("setLoading", true);
+      await delay(1000);
+      const mockResult: boolean = Math.random() > 0.5;
+      commit("setLoading", false);
+      return mockResult;
     },
   },
 };

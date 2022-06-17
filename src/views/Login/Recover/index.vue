@@ -11,45 +11,15 @@
     </div>
     <div class="login-main">
       <el-form
-        ref="registerFormRef"
-        :model="registerForm"
+        ref="recoverFormRef"
+        :model="recoverForm"
         :rules="rules"
         status-icon
       >
-        <el-form-item prop="loginId">
-          <el-input
-            v-model="registerForm.loginId"
-            placeholder="请输入账号"
-            :prefix-icon="User"
-            size="large"
-          />
-        </el-form-item>
-        <el-form-item prop="loginPwd">
-          <el-input
-            v-model="registerForm.loginPwd"
-            placeholder="请输入密码"
-            :prefix-icon="Lock"
-            type="password"
-            autocomplete="off"
-            show-password
-            size="large"
-          />
-        </el-form-item>
-        <el-form-item prop="loginPwdCheck">
-          <el-input
-            v-model="registerForm.loginPwdCheck"
-            placeholder="确认密码"
-            :prefix-icon="Lock"
-            type="password"
-            autocomplete="off"
-            show-password
-            size="large"
-          />
-        </el-form-item>
         <el-form-item prop="loginPhone">
           <el-input
-            v-model="registerForm.loginPhone"
-            placeholder="请输入手机号"
+            v-model="recoverForm.loginPhone"
+            placeholder="输入手机号"
             :prefix-icon="Phone"
             size="large"
           />
@@ -57,7 +27,7 @@
         <el-form-item prop="loginAuth">
           <div class="flex-layout">
             <el-input
-              v-model="registerForm.loginAuth"
+              v-model="recoverForm.loginAuth"
               placeholder="验证码"
               :prefix-icon="Document"
               size="large"
@@ -72,6 +42,28 @@
             </el-button>
           </div>
         </el-form-item>
+        <el-form-item prop="loginPwd">
+          <el-input
+            v-model="recoverForm.loginPwd"
+            placeholder="重置密码"
+            :prefix-icon="Lock"
+            type="password"
+            autocomplete="off"
+            show-password
+            size="large"
+          />
+        </el-form-item>
+        <el-form-item prop="loginPwdCheck">
+          <el-input
+            v-model="recoverForm.loginPwdCheck"
+            placeholder="确认密码"
+            :prefix-icon="Lock"
+            type="password"
+            autocomplete="off"
+            show-password
+            size="large"
+          />
+        </el-form-item>
         <el-form-item>
           <div class="flex-layout">
             <el-button
@@ -79,15 +71,12 @@
               type="primary"
               :loading="userLoading"
               size="large"
-              @click="handlerRegister(registerFormRef)"
+              @click="handlerRecover(recoverFormRef)"
             >
-              注册
+              提交
             </el-button>
-            <router-link :to="{ name: 'login' }">使用已有账户登录</router-link>
+            <router-link :to="{ name: 'login' }">返回登录</router-link>
           </div>
-        </el-form-item>
-        <el-form-item class="register-tip">
-          * 新注册用户需等管理员审核授权后，才能登录访问
         </el-form-item>
       </el-form>
     </div>
@@ -101,20 +90,19 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import type { ElForm } from "element-plus";
-import { User, Lock, Phone, Document } from "@element-plus/icons-vue";
-import useRule from "./useRule";
-import useAuthCode from "./useAuthCode";
-import type { IRegisterInfo } from "../../../api/login";
+import { Lock, Phone, Document } from "@element-plus/icons-vue";
+import useRule from "../Register/useRule";
+import useAuthCode from "../Register/useAuthCode";
+import type { IRecoverInfo } from "../../../api/login";
 
 const router = useRouter();
 const store = useStore();
 
 const userLoading = computed(() => store.state.loginUser.userLoading);
 
-const registerFormRef = ref<InstanceType<typeof ElForm>>();
+const recoverFormRef = ref<InstanceType<typeof ElForm>>();
 
-const registerForm: IRegisterInfo = reactive({
-  loginId: "",
+const recoverForm: IRecoverInfo = reactive({
   loginPwd: "",
   loginPwdCheck: "",
   loginPhone: "",
@@ -124,29 +112,26 @@ const registerForm: IRegisterInfo = reactive({
 /**
  * 表单验证规则
  */
-const { rules, RegPhone } = useRule(registerForm);
+const { rules, RegPhone } = useRule(recoverForm);
 
 /**
  * 验证码
  */
 const { authCodeFlag, authCodeText, canSend, getAuthCode } = useAuthCode(
-  registerForm,
+  recoverForm,
   RegPhone
 );
 
-const handlerRegister = (formEl: InstanceType<typeof ElForm> | undefined) => {
+const handlerRecover = (formEl: InstanceType<typeof ElForm> | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid: boolean) => {
     if (valid) {
-      const result = await store.dispatch(
-        "loginUser/userRegister",
-        registerForm
-      );
+      const result = await store.dispatch("loginUser/recoverPass", recoverForm);
       if (result) {
-        ElMessage.success("注册成功");
+        ElMessage.success("修改成功");
         router.push({ name: "login" });
       } else {
-        ElMessage.error("注册失败");
+        ElMessage.error("修改失败");
       }
     }
   });

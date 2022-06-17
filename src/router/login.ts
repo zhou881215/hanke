@@ -2,15 +2,26 @@
  * @Author: Cram
  * @Date: 2022-06-17 09:50:11
  */
+const components = {
+  Login: () => import("../views/Login/index.vue"),
+  Register: () => import("../views/Login/Register/index.vue"),
+  Recover: () => import("../views/Login/Recover/index.vue"),
+};
 
 export default [
-  { path: "/login", component: () => import("../views/Login/index.vue") },
   {
-    path: "/login/register",
-    component: () => import("../views/Login/Register/index.vue"),
+    name: "login",
+    path: "/login",
+    component: components.Login,
   },
   {
-    path: "/login/reset",
-    component: () => import("../views/Login/Reset/index.vue"),
+    name: "register",
+    path: "/register",
+    component: components.Register,
+  },
+  {
+    name: "recover",
+    path: "/recover",
+    component: components.Recover,
   },
 ];

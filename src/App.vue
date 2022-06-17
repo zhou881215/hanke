@@ -16,7 +16,7 @@ const router = useRouter();
 onMounted(() => {
   const localUserInfo: string | null = localStorage.getItem(UserLocal);
   if (!localUserInfo) {
-    router.push("/login");
+    router.push({ name: "login" });
   }
 });
 </script>
