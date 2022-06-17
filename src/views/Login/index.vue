@@ -80,7 +80,7 @@ const remember = ref<boolean>(false);
 const submitForm = async () => {
   const user = await store.dispatch("loginUser/loginIn", loginForm);
   if (user) {
-    router.push({ name: "product" });
+    router.push({ name: "mainLayout" });
   } else {
     ElMessage.error("账号或密码错误");
   }

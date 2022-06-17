@@ -9,7 +9,7 @@ const components = {
 export default [
   {
     name: "product",
-    path: "/",
+    path: "/product",
     component: components.Product,
   },
 ];
