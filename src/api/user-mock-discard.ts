@@ -1,12 +1,16 @@
-function delay(duration) {
-  return new Promise((resolve) => {
+/*
+ * @Author: Cram
+ * @Date: 2022-06-17 09:50:11
+ */
+function delay(duration: number) {
+  return new Promise((resolve: any) => {
     setTimeout(() => {
       resolve();
     }, duration);
   });
 }
 
-export async function login(loginId, loginPwd) {
+export async function login(loginId: string, loginPwd: string) {
   await delay(1000);
   if (loginId === "admin" && loginPwd === "123123") {
     const user = {
