@@ -31,13 +31,21 @@
           <div class="right-logo"><Logo /></div>
           <div class="right-btn">
             {{ userInfo.userName }}
-            <el-button type="primary" size="small" @click="handleLoginOut">
+            <el-button
+              type="primary"
+              size="small"
+              :loading="userLoading"
+              @click="handleLoginOut"
+            >
               退出登录
             </el-button>
           </div>
         </div>
       </div>
-      <div class="main-area"><router-view /></div>
+      <div class="main-area">
+        <router-view />
+      </div>
+      <Copyright />
     </div>
   </div>
 </template>
@@ -46,17 +54,13 @@
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import {
-  GoodsFilled,
-  Avatar,
-  Expand,
-  Fold,
-  SwitchButton,
-} from "@element-plus/icons-vue";
+import { GoodsFilled, Avatar, Expand, Fold } from "@element-plus/icons-vue";
 import { UserLocal } from "../../store/constant";
 
 const router = useRouter();
 const store = useStore();
+
+const userLoading = computed(() => store.state.loginUser.userLoading);
 
 /**
  * 伸缩
