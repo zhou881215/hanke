@@ -65,7 +65,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { User, Lock } from "@element-plus/icons-vue";
-import type { ILoginData } from "../../api/login";
+import type { ILoginData } from "../../api/loginApi";
 
 const router = useRouter();
 const store = useStore();

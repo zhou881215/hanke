@@ -104,7 +104,7 @@ import type { ElForm } from "element-plus";
 import { User, Lock, Phone, Document } from "@element-plus/icons-vue";
 import useRule from "./useRule";
 import useAuthCode from "./useAuthCode";
-import type { IRegisterInfo } from "../../../api/login";
+import type { IRegisterInfo } from "../../../api/loginApi";
 
 const router = useRouter();
 const store = useStore();

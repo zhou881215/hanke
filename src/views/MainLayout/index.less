@@ -7,6 +7,7 @@
   background-color: @LightColor;
 
   .left-menu {
+    width: 200px;
     min-height: 100%;
     border: none;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
@@ -23,10 +24,10 @@
 
     .is-active {
       color: @LightColor;
-      background-color: @mainColor;
+      background-color: @brandColor;
 
       &:hover {
-        background-color: @mainColor;
+        background-color: @brandColor;
       }
     }
   }
@@ -41,38 +42,24 @@
       height: 56px;
       justify-content: space-between;
       align-items: center;
-      padding: 0 20px;
+      padding: 0 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
       background-color: @LightColor;
 
-      .collapse {
-        cursor: pointer;
-
-        i {
-          font-size: 22px;
-        }
+      .tool-logo {
+        width: 110px;
       }
 
-      .tool-right {
-        display: flex;
-        align-items: center;
-
-        .right-logo {
-          width: 100px;
-          margin-right: 20px;
-        }
-
-        .right-btn {
-          .el-button {
-            margin-left: 10px;
-          }
+      .tool-btn {
+        .el-button {
+          margin-left: 6px;
         }
       }
     }
 
     .main-area {
       height: calc(100% - 56px);
-      padding: 20px 20px 70px 20px;
+      padding: 10px 10px 70px 10px;
     }
   }
 

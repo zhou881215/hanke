@@ -6,9 +6,7 @@
   <div class="main-wrapper">
     <el-menu
       class="left-menu"
-      :style="{ width: isCollapse ? '' : '230px' }"
       default-active="1"
-      :collapse="isCollapse"
       :collapse-transition="false"
       router
     >
@@ -16,30 +14,31 @@
         <el-icon><GoodsFilled /></el-icon>
         <template #title>产品中心</template>
       </el-menu-item>
-      <el-menu-item index="2" :route="{ name: 'user' }">
+      <el-menu-item
+        v-if="userInfo.userRank"
+        index="2"
+        :route="{ name: 'user' }"
+      >
         <el-icon><Avatar /></el-icon>
         <template #title>用户管理</template>
       </el-menu-item>
     </el-menu>
     <div class="right-layout">
       <div class="top-tool">
-        <div class="collapse" @click="switchCollapse">
-          <el-icon v-show="isCollapse"><Expand /></el-icon>
-          <el-icon v-show="!isCollapse"><Fold /></el-icon>
-        </div>
-        <div class="tool-right">
-          <div class="right-logo"><Logo /></div>
-          <div class="right-btn">
-            {{ userInfo.userName }}
-            <el-button
-              type="primary"
-              size="small"
-              :loading="userLoading"
-              @click="handleLoginOut"
-            >
-              退出登录
-            </el-button>
-          </div>
+        <div class="tool-logo"><Logo /></div>
+        <div class="tool-btn">
+          用户名：{{ userInfo.userName }}； 用户等级：{{
+            userInfo.userRank ? "管理员" : "用户"
+          }}
+          <el-button
+            type="primary"
+            size="small"
+            :loading="userLoading"
+            :icon="SwitchButton"
+            @click="handleLoginOut"
+          >
+            退出
+          </el-button>
         </div>
       </div>
       <div class="main-area">
@@ -51,22 +50,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { GoodsFilled, Avatar, Expand, Fold } from "@element-plus/icons-vue";
-import { UserLocal } from "../../store/constant";
+import { GoodsFilled, Avatar, SwitchButton } from "@element-plus/icons-vue";
+import { UserLocal } from "../../store/loginUser";
 
 const router = useRouter();
 const store = useStore();
 
 const userLoading = computed(() => store.state.loginUser.userLoading);
-
-/**
- * 伸缩
- */
-const isCollapse = ref(false);
-const switchCollapse = () => (isCollapse.value = !isCollapse.value);
 
 /**
  * 用户

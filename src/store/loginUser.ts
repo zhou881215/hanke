@@ -2,9 +2,18 @@
  * @Author: Cram
  * @Date: 2022-06-17 09:50:11
  */
-import { UserLocal } from "./constant";
-import type { ILoginUser, IUserInfo } from "./constant";
-import { delay } from "../api/login";
+import { delay } from "../api/loginApi";
+
+export const UserLocal: string = "userLocal";
+export interface ILoginUser {
+  userInfo: IUserInfo;
+  userLoading: boolean;
+}
+
+export interface IUserInfo {
+  userName: string;
+  userRank: boolean;
+}
 
 const state: ILoginUser = {
   userInfo: null as IUserInfo & null,
@@ -31,7 +40,7 @@ export default {
       await delay(1000);
       const currentUser: IUserInfo = {
         userName: "Cram" + Math.random(),
-        userRank: Math.random() > 0.8,
+        userRank: Math.random() > 0.5,
       };
       commit("setUser", currentUser);
       commit("setLoading", false);

@@ -93,7 +93,7 @@ import type { ElForm } from "element-plus";
 import { Lock, Phone, Document } from "@element-plus/icons-vue";
 import useRule from "../Register/useRule";
 import useAuthCode from "../Register/useAuthCode";
-import type { IRecoverInfo } from "../../../api/login";
+import type { IRecoverInfo } from "../../../api/loginApi";
 
 const router = useRouter();
 const store = useStore();
