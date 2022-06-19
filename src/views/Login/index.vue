@@ -70,7 +70,7 @@ import type { ILoginData } from "../../api/loginApi";
 const router = useRouter();
 const store = useStore();
 
-const userLoading = computed(() => store.state.loginUser.userLoading);
+const userLoading = computed(() => store.state.loginStore.userLoading);
 
 const loginForm: ILoginData = reactive({
   loginId: "",
@@ -78,7 +78,7 @@ const loginForm: ILoginData = reactive({
 });
 const remember = ref<boolean>(false);
 const submitForm = async () => {
-  const user = await store.dispatch("loginUser/loginIn", loginForm);
+  const user = await store.dispatch("loginStore/loginIn", loginForm);
   if (user) {
     router.push({ name: "mainLayout" });
   } else {

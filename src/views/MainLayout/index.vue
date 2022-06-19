@@ -54,12 +54,12 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { GoodsFilled, Avatar, SwitchButton } from "@element-plus/icons-vue";
-import { UserLocal } from "../../store/loginUser";
+import { UserLocal } from "../../store/loginStore";
 
 const router = useRouter();
 const store = useStore();
 
-const userLoading = computed(() => store.state.loginUser.userLoading);
+const userLoading = computed(() => store.state.loginStore.userLoading);
 
 /**
  * 用户
@@ -77,7 +77,7 @@ const userInfo = computed(() => {
  * 退出
  */
 const handleLoginOut = async () => {
-  await store.dispatch("loginUser/loginOut");
+  await store.dispatch("loginStore/loginOut");
   router.push({ name: "login" });
 };
 </script>

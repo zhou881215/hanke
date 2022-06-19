@@ -2,11 +2,11 @@
  * @Author: Cram
  * @Date: 2022-06-18 03:45:31
  */
-import productRoutes from "./product";
-import userRoutes from "./user";
+import productRouter from "./productRouter";
+import userRouter from "./userRouter";
 
 const components = {
-  MainLayout: () => import("../views/MainLayout/index.vue"),
+  MainLayout: () => import("../views/mainLayout/index.vue"),
 };
 
 export default [
@@ -15,6 +15,6 @@ export default [
     path: "/",
     component: components.MainLayout,
     redirect: "/product",
-    children: [...productRoutes, ...userRoutes],
+    children: [...productRouter, ...userRouter],
   },
 ];

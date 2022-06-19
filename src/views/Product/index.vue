@@ -47,6 +47,8 @@
       <el-button type="primary" :icon="CirclePlus">新增</el-button>
     </div>
     <el-table
+      v-loading="productLoading"
+      element-loading-text="Loading..."
       :data="productData"
       border
       stripe
@@ -127,13 +129,13 @@ import {
   Edit,
 } from "@element-plus/icons-vue";
 import useSearch from "./useSearch";
-import { UserLocal } from "../../store/loginUser";
+import { UserLocal } from "../../store/loginStore";
 
 const router = useRouter();
 const store = useStore();
 
-const productLoading = computed(() => store.state.product.productLoading);
-const productData = computed(() => store.state.product.productData);
+const productLoading = computed(() => store.state.productStore.productLoading);
+const productData = computed(() => store.state.productStore.productData);
 
 /**
  * 用户

@@ -98,7 +98,7 @@ import type { IRecoverInfo } from "../../../api/loginApi";
 const router = useRouter();
 const store = useStore();
 
-const userLoading = computed(() => store.state.loginUser.userLoading);
+const userLoading = computed(() => store.state.loginStore.userLoading);
 
 const recoverFormRef = ref<InstanceType<typeof ElForm>>();
 
@@ -126,7 +126,10 @@ const handlerRecover = (formEl: InstanceType<typeof ElForm> | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid: boolean) => {
     if (valid) {
-      const result = await store.dispatch("loginUser/recoverPass", recoverForm);
+      const result = await store.dispatch(
+        "loginStore/recoverPass",
+        recoverForm
+      );
       if (result) {
         ElMessage.success("修改成功");
         router.push({ name: "login" });

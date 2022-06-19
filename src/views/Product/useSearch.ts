@@ -25,7 +25,7 @@ export default function () {
     if (flag) {
       searchParam.value = cloneDeep(defaultSearch);
     }
-    await store.dispatch("product/fetchProduct", searchParam.value);
+    await store.dispatch("productStore/fetchProduct", searchParam.value);
   };
 
   return { searchParam, handleSearch };

@@ -109,7 +109,7 @@ import type { IRegisterInfo } from "../../../api/loginApi";
 const router = useRouter();
 const store = useStore();
 
-const userLoading = computed(() => store.state.loginUser.userLoading);
+const userLoading = computed(() => store.state.loginStore.userLoading);
 
 const registerFormRef = ref<InstanceType<typeof ElForm>>();
 
@@ -139,7 +139,7 @@ const handlerRegister = (formEl: InstanceType<typeof ElForm> | undefined) => {
   formEl.validate(async (valid: boolean) => {
     if (valid) {
       const result = await store.dispatch(
-        "loginUser/userRegister",
+        "loginStore/userRegister",
         registerForm
       );
       if (result) {
