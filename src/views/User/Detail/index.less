@@ -1,0 +1,33 @@
+@import "../../../styles/var.less";
+
+.detail-main {
+  margin-top: -20px;
+
+  .detail-descriptions,
+  .detail-collapse {
+    margin-bottom: 20px;
+  }
+
+  .collapse-chunk {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid @baseBorder;
+    border-radius: 5px;
+
+    .collapse-chunk-title {
+      margin-bottom: 5px;
+    }
+
+    .tag-item {
+      margin-right: 5px;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+}

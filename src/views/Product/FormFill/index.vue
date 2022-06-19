@@ -232,7 +232,6 @@
         </el-row>
       </el-form>
     </div>
-
     <template #footer>
       <el-button :loading="saveSingleLoading" @click="handleClose">
         取消

@@ -58,7 +58,7 @@
         :show-file-list="false"
         accept=".xlsx,.xls"
       >
-        <el-button type="primary" :icon="Upload">上传</el-button>
+        <el-button type="primary" :icon="Upload">导入</el-button>
       </el-upload>
       <el-button
         type="primary"
@@ -74,13 +74,12 @@
       :data="productData"
       border
       stripe
-      :empty-text="'暂无数据'"
       style="width: 100%"
     >
       <template #empty>
         <el-empty description="哎呀，暂时没有数据！" />
       </template>
-      <el-table-column prop="lb" label="序号" width="80" />
+      <el-table-column fixed prop="lb" label="序号" width="80" />
       <el-table-column prop="lb" label="类别" width="100" />
       <el-table-column prop="lb" label="产品名称" width="150" />
       <el-table-column prop="lb" label="检测项目" width="250" />
@@ -118,6 +117,7 @@
           <el-button
             :icon="Edit"
             size="small"
+            type="primary"
             @click="handleOpenForm(true, false, row)"
           />
         </template>
@@ -182,8 +182,8 @@ const { searchParam, handleSearch } = useSearch();
 const dialogVisible = ref(false);
 const activeId = ref("");
 const handleOpenForm = (
-  openFlag: boolean,
-  fetchFlag?: boolean,
+  openFlag: boolean, // 是否打开
+  fetchFlag?: boolean, // 是否重新查询
   row?: IProduct
 ) => {
   activeId.value = row ? row.lb : "";
