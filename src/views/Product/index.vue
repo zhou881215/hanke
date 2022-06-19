@@ -5,16 +5,32 @@
 <template>
   <el-form :inline="true" :model="searchParam" class="search-area">
     <el-form-item label="检测标准">
-      <el-input v-model="searchParam.jcbz" placeholder="检测标准" />
+      <el-input
+        :disabled="productLoading"
+        v-model="searchParam.jcbz"
+        placeholder="检测标准"
+      />
     </el-form-item>
     <el-form-item label="检测项目">
-      <el-input v-model="searchParam.jcxm" placeholder="检测项目" />
+      <el-input
+        :disabled="productLoading"
+        v-model="searchParam.jcxm"
+        placeholder="检测项目"
+      />
     </el-form-item>
     <el-form-item label="类别">
-      <el-input v-model="searchParam.lb" placeholder="类别" />
+      <el-input
+        :disabled="productLoading"
+        v-model="searchParam.lb"
+        placeholder="类别"
+      />
     </el-form-item>
     <el-form-item label="产品名称">
-      <el-input v-model="searchParam.cpmc" placeholder="产品名称" />
+      <el-input
+        :disabled="productLoading"
+        v-model="searchParam.cpmc"
+        placeholder="产品名称"
+      />
     </el-form-item>
     <el-form-item>
       <el-button
@@ -44,7 +60,13 @@
       >
         <el-button type="primary" :icon="Upload">上传</el-button>
       </el-upload>
-      <el-button type="primary" :icon="CirclePlus">新增</el-button>
+      <el-button
+        type="primary"
+        :icon="CirclePlus"
+        @click="handleOpenForm(true)"
+      >
+        新增
+      </el-button>
     </div>
     <el-table
       v-loading="productLoading"
@@ -58,16 +80,10 @@
       <template #empty>
         <el-empty description="哎呀，暂时没有数据！" />
       </template>
-      <el-table-column
-        fixed
-        type="index"
-        align="center"
-        label="序号"
-        width="60"
-      />
-      <el-table-column prop="lb" label="类别" width="150" />
+      <el-table-column prop="lb" label="序号" width="80" />
+      <el-table-column prop="lb" label="类别" width="100" />
       <el-table-column prop="lb" label="产品名称" width="150" />
-      <el-table-column prop="lb" label="检测项目" width="150" />
+      <el-table-column prop="lb" label="检测项目" width="250" />
       <el-table-column prop="lb" label="项目别名" width="150" />
       <el-table-column prop="lb" label="检测标准" width="150" />
       <el-table-column prop="lb" label="标准名称" width="150" />
@@ -78,28 +94,32 @@
       <el-table-column prop="lb" label="测试仪器实验方法" width="150" />
       <el-table-column prop="lb" label="周期类型" width="150" />
       <el-table-column prop="lb" label="检测周期" width="150" />
-      <el-table-column prop="lb" label="报价" width="150" />
+      <el-table-column prop="lb" label="报价" width="100" />
       <el-table-column
-        v-if="userInfo.userRank"
+        v-if="props.userInfo.userRank"
         prop="lb"
         label="成本"
-        width="150"
+        width="100"
       />
-      <el-table-column prop="lb" label="CMA资质" width="150" />
-      <el-table-column prop="lb" label="CNAS资质" width="150" />
+      <el-table-column prop="lb" label="CMA资质" width="100" />
+      <el-table-column prop="lb" label="CNAS资质" width="100" />
       <el-table-column prop="lb" label="接单须知" width="150" />
       <el-table-column
-        v-if="userInfo.userRank"
+        v-if="props.userInfo.userRank"
         prop="lb"
         label="供应商名称"
-        width="150"
+        width="250"
       />
-      <el-table-column prop="lb" label="是否制样" width="150" />
+      <el-table-column prop="lb" label="是否制样" width="100" />
       <el-table-column prop="lb" label="制样周期" width="150" />
       <el-table-column prop="lb" label="制样费用" width="150" />
       <el-table-column fixed="right" align="center" label="操作" width="70">
-        <template #default>
-          <el-button :icon="Edit" size="small" @click="handleEdit" />
+        <template #default="{ row }">
+          <el-button
+            :icon="Edit"
+            size="small"
+            @click="handleOpenForm(true, false, row)"
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -115,12 +135,18 @@
       />
     </div>
   </div>
+  <FormFill
+    :dialogVisible="dialogVisible"
+    :activeId="activeId"
+    :userInfo="props.userInfo"
+    @handleOpenForm="handleOpenForm"
+  />
 </template>
 
 <script lang="ts" setup>
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
+import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 import {
   Search,
   Refresh,
@@ -129,25 +155,21 @@ import {
   Edit,
 } from "@element-plus/icons-vue";
 import useSearch from "./useSearch";
-import { UserLocal } from "../../store/loginStore";
+import type { IProduct } from "../../api/productApi";
+import type { IUserInfo } from "../../store/loginStore";
+import FormFill from "./FormFill/index.vue";
 
-const router = useRouter();
 const store = useStore();
+const productLoading: ComputedRef<boolean> = computed(
+  () => store.state.productStore.productLoading
+);
+const productData: ComputedRef<Array<IProduct>> = computed(
+  () => store.state.productStore.productData
+);
 
-const productLoading = computed(() => store.state.productStore.productLoading);
-const productData = computed(() => store.state.productStore.productData);
-
-/**
- * 用户
- */
-const userInfo = computed(() => {
-  const localUserInfo: string | null = localStorage.getItem(UserLocal);
-  try {
-    return JSON.parse(localUserInfo as string);
-  } catch (error) {
-    return {};
-  }
-});
+const props = defineProps<{
+  userInfo: IUserInfo;
+}>();
 
 /**
  * 搜索相关
@@ -155,15 +177,21 @@ const userInfo = computed(() => {
 const { searchParam, handleSearch } = useSearch();
 
 /**
- * 跳转编辑
+ * 新增编辑
  */
-const handleEdit = () => {
-  console.log("click");
+const dialogVisible = ref(false);
+const activeId = ref("");
+const handleOpenForm = (
+  openFlag: boolean,
+  fetchFlag?: boolean,
+  row?: IProduct
+) => {
+  activeId.value = row ? row.lb : "";
+  dialogVisible.value = openFlag;
+  if (fetchFlag) {
+    handleSearch();
+  }
 };
-
-/**
- * 分页
- */
 
 onMounted(() => {
   handleSearch();

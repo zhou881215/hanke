@@ -3,7 +3,8 @@
  * @Date: 2022-06-18 22:16:12
  */
 export interface IProduct {
-  id: string;
+  id?: string;
+  xh: string;
   lb: string;
   cpmc: string;
   jcxm: string;

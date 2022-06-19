@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="main-area">
-        <router-view />
+        <router-view :userInfo="userInfo" />
       </div>
       <Copyright />
     </div>
@@ -51,20 +51,24 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { GoodsFilled, Avatar, SwitchButton } from "@element-plus/icons-vue";
 import { UserLocal } from "../../store/loginStore";
+import type { IUserInfo } from "../../store/loginStore";
 
 const router = useRouter();
 const store = useStore();
 
-const userLoading = computed(() => store.state.loginStore.userLoading);
+const userLoading: ComputedRef<boolean> = computed(
+  () => store.state.loginStore.userLoading
+);
 
 /**
  * 用户
  */
-const userInfo = computed(() => {
+const userInfo: ComputedRef<IUserInfo> = computed(() => {
   const localUserInfo: string | null = localStorage.getItem(UserLocal);
   try {
     return JSON.parse(localUserInfo as string);

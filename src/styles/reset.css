@@ -152,7 +152,7 @@ body {
   width: 100%;
   font-size: 14px;
   /* line-height: 2.2em; */
-  color: rgba(0, 0, 0, 0.65);
+  color: #909399;
   font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", "微软雅黑", sans-serif;
 }
 
@@ -194,7 +194,7 @@ img {
 }
 
 a {
-  color: rgba(0, 0, 0, 0.65);
+  color: #909399;
   text-decoration: none;
 }
 

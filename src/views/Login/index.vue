@@ -61,6 +61,7 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
+import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
@@ -70,7 +71,9 @@ import type { ILoginData } from "../../api/loginApi";
 const router = useRouter();
 const store = useStore();
 
-const userLoading = computed(() => store.state.loginStore.userLoading);
+const userLoading: ComputedRef<boolean> = computed(
+  () => store.state.loginStore.userLoading
+);
 
 const loginForm: ILoginData = reactive({
   loginId: "",
