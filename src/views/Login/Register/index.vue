@@ -96,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from "vue";
+import { reactive, ref, computed, onUnmounted } from "vue";
 import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -132,7 +132,7 @@ const { rules, RegPhone } = useRule(registerForm);
 /**
  * 验证码
  */
-const { authCodeFlag, authCodeText, canSend, getAuthCode } = useAuthCode(
+let { authCodeFlag, authCodeText, canSend, getAuthCode, timer } = useAuthCode(
   registerForm,
   RegPhone
 );
@@ -154,6 +154,10 @@ const handlerRegister = (formEl: InstanceType<typeof ElForm> | undefined) => {
     }
   });
 };
+
+onUnmounted(() => {
+  clearInterval(timer);
+});
 </script>
 
 <style scoped lang="less" src="./index.less"></style>

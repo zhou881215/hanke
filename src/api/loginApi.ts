@@ -36,4 +36,13 @@ export function delay(duration: number) {
 }
 
 export const loginInApi = async (params: ILoginData) =>
+  await axios.post("../Api/Login/loginIn", params);
+
+export const loginOutApi = async (params: ILoginData) =>
+  await axios.post("/Api/Login/loginIn", params);
+
+export const userRegisterApi = async (params: ILoginData) =>
+  await axios.post("/Api/Login/loginIn", params);
+
+export const recoverPassApi = async (params: ILoginData) =>
   await axios.post("/Api/Login/loginIn", params);

@@ -39,19 +39,13 @@ export default {
     async loginIn({ commit }: any, params: ILoginData) {
       commit("setLoading", true);
       const currentUser = await loginInApi(params);
-
-      // await delay(1000);
-      // const currentUser: IUserInfo = {
-      //   userName: "Cram" + Math.random(),
-      //   userRank: Math.random() > 0.5,
-      // };
       commit("setUser", currentUser);
       commit("setLoading", false);
       localStorage.setItem(UserLocal, JSON.stringify(currentUser));
       return currentUser;
     },
     /**
-     * 登出`
+     * 登出
      */
     async loginOut({ commit }: any) {
       commit("setLoading", true);

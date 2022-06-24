@@ -11,11 +11,13 @@ export default function (registerForm: any, RegPhone: RegExp) {
 
   const canSend = computed(() => RegPhone.test(registerForm.loginPhone));
 
-  const getAuthCode = () => {
+  let timer: any = null;
+
+  const getAuthCode = async () => {
     authCodeFlag.value = true;
     let count = 60;
     authCodeText.value = count + "s";
-    const timer = setInterval(() => {
+    timer = setInterval(() => {
       count--;
       authCodeText.value = count + "s";
       if (count <= 0) {
@@ -25,5 +27,6 @@ export default function (registerForm: any, RegPhone: RegExp) {
       }
     }, 1000);
   };
-  return { authCodeFlag, authCodeText, canSend, getAuthCode };
+
+  return { authCodeFlag, authCodeText, canSend, getAuthCode, timer };
 }
