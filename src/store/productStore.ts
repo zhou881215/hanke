@@ -4,7 +4,7 @@
  */
 import { delay } from "../api/loginApi";
 import type { IProduct, ISearchParam } from "../api/productApi";
-import { cloneDeep } from "../utils/utils";
+import { cloneDeep } from "../utils";
 
 interface IProductStore {
   productLoading: boolean;

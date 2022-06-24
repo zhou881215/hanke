@@ -2,7 +2,8 @@
  * @Author: Cram
  * @Date: 2022-06-17 09:50:11
  */
-import { delay } from "../api/loginApi";
+import { delay, loginInApi } from "../api/loginApi";
+import type { ILoginData } from "../api/loginApi";
 
 export const UserLocal: string = "userLocal";
 export interface ILoginUser {
@@ -35,20 +36,22 @@ export default {
     /**
      * 登录
      */
-    async loginIn({ commit }: any, { loginId, loginPwd }: any) {
+    async loginIn({ commit }: any, params: ILoginData) {
       commit("setLoading", true);
-      await delay(1000);
-      const currentUser: IUserInfo = {
-        userName: "Cram" + Math.random(),
-        userRank: Math.random() > 0.5,
-      };
+      const currentUser = await loginInApi(params);
+
+      // await delay(1000);
+      // const currentUser: IUserInfo = {
+      //   userName: "Cram" + Math.random(),
+      //   userRank: Math.random() > 0.5,
+      // };
       commit("setUser", currentUser);
       commit("setLoading", false);
       localStorage.setItem(UserLocal, JSON.stringify(currentUser));
       return currentUser;
     },
     /**
-     * 登出
+     * 登出`
      */
     async loginOut({ commit }: any) {
       commit("setLoading", true);

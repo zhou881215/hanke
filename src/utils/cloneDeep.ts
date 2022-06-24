@@ -1,7 +1,7 @@
 /*
  * @Author: Cram
- * @Date: 2022-06-18 23:37:07
+ * @Date: 2022-06-24 10:52:51
  */
-export function cloneDeep(obj: any) {
+export default function (obj: any) {
   return JSON.parse(JSON.stringify(obj));
 }

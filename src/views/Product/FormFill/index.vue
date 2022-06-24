@@ -254,7 +254,7 @@ import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
 import type { IUserInfo } from "../../../store/loginStore";
 import type { IProduct } from "../../../api/productApi";
-import { cloneDeep } from "../../../utils/utils";
+import { cloneDeep } from "../../../utils";
 import { defaultDetail } from "../../../store/productStore";
 
 const store = useStore();

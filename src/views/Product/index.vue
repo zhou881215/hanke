@@ -18,11 +18,11 @@
         placeholder="检测项目"
       />
     </el-form-item>
-    <el-form-item label="类别">
+    <el-form-item label="产品类别">
       <el-input
         :disabled="productLoading"
         v-model="searchParam.lb"
-        placeholder="类别"
+        placeholder="产品类别"
       />
     </el-form-item>
     <el-form-item label="产品名称">

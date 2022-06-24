@@ -5,7 +5,7 @@
 import { ref } from "vue";
 import { useStore } from "vuex";
 import type { ISearchParam } from "../../api/productApi";
-import { cloneDeep } from "../../utils/utils";
+import { cloneDeep } from "../../utils";
 
 export default function () {
   const store = useStore();
