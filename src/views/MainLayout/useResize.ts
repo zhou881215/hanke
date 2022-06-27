@@ -9,6 +9,7 @@ import { throttle } from "../../utils";
 export default function () {
   const phoneWidth: number = 768;
 
+  // 是否手机尺寸
   const isPhone: Ref<boolean> = ref<boolean>(false);
 
   provide("isPhone", readonly(isPhone));
@@ -17,5 +18,14 @@ export default function () {
     isPhone.value = document.documentElement.clientWidth <= phoneWidth;
   }, 100);
 
-  return { phoneWidth, isPhone, recodeWidth };
+  // 手机端导航
+  const drawerFlag: Ref<boolean> = ref<boolean>(false);
+
+  const openDrawer = () => {
+    if (isPhone.value) {
+      drawerFlag.value = true;
+    }
+  };
+
+  return { phoneWidth, isPhone, recodeWidth, drawerFlag, openDrawer };
 }

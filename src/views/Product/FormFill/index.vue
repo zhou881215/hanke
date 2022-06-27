@@ -153,3 +153,11 @@ const clearStoreDetail = (fetchFlag?: boolean) => {
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less" src="./phone.less"></style>
+<style>
+@media (max-width: 768px) {
+  .el-message-box {
+    width: 80%;
+  }
+}
+</style>

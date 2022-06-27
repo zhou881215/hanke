@@ -25,7 +25,9 @@
     </el-menu>
     <div class="right-layout">
       <div class="top-tool">
-        <div class="tool-logo"><Logo /></div>
+        <div class="tool-logo">
+          <Logo @click="openDrawer" />
+        </div>
         <div class="tool-btn">
           <span>用户名：{{ userInfo.userName }}； </span>
           <span>用户等级：{{ userInfo.userRank ? "管理员" : "用户" }}</span>
@@ -45,6 +47,15 @@
       </div>
       <Copyright />
     </div>
+    <el-drawer
+      custom-class="phone-drawer"
+      direction="ltr"
+      size="50%"
+      v-model="drawerFlag"
+      :with-header="false"
+    >
+      <span>Hi there!</span>
+    </el-drawer>
   </div>
 </template>
 
@@ -91,7 +102,8 @@ const handleLoginOut = async () => {
 /**
  * 尺寸响应
  */
-const { phoneWidth, isPhone, recodeWidth } = useResize();
+const { phoneWidth, isPhone, recodeWidth, drawerFlag, openDrawer } =
+  useResize();
 
 onMounted(() => {
   if (document.documentElement.clientWidth <= phoneWidth) {
@@ -107,3 +119,15 @@ onUnmounted(() => {
 
 <style scoped lang="less" src="./index.less"></style>
 <style scoped lang="less" src="./phone.less"></style>
+<style lang="less">
+@import "../../styles/var.less";
+@media (max-width: 768px) {
+  .phone-drawer {
+    background-color: #001529;
+
+    .el-drawer__body {
+      padding: 0;
+    }
+  }
+}
+</style>

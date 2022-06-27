@@ -79,7 +79,7 @@ const loginForm: ILoginData = reactive({
   loginPwd: "",
 });
 
-const remember = ref<boolean>(false);
+const remember = ref<boolean>(true);
 
 const submitForm = async () => {
   const isSucceed: boolean = await store.dispatch(
