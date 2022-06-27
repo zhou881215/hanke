@@ -83,3 +83,4 @@ const submitForm = () => store.dispatch("loginStore/loginIn", loginForm);
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less" src="./phone.less"></style>

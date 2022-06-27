@@ -4,8 +4,8 @@
  */
 const components = {
   Login: () => import("../views/Login/index.vue"),
-  Register: () => import("../views/Login/Register/index.vue"),
-  Recover: () => import("../views/Login/Recover/index.vue"),
+  Register: () => import("../views/Register/index.vue"),
+  Recover: () => import("../views/Recover/index.vue"),
 };
 
 export default [
