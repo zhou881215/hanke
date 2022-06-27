@@ -4,3 +4,5 @@
  */
 export { default as cloneDeep } from "./cloneDeep";
 export { default as axios } from "./axios";
+export { default as debounce } from "./debounce";
+export { default as throttle } from "./throttle";

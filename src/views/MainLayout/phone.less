@@ -1,0 +1,33 @@
+@media (max-width: 768px) {
+  .main-wrapper {
+    .left-menu {
+      display: none;
+    }
+
+    .right-layout {
+      .top-tool {
+        height: 1.2rem;
+        padding: 0 0.24rem;
+
+        .tool-logo {
+          width: 30%;
+        }
+
+        .tool-btn {
+          >span {
+            display: none;
+          }
+
+          .el-button {
+            margin-left: 0;
+          }
+        }
+      }
+
+      .main-area {
+        height: calc(100% - 1.2rem);
+        padding: 0.24rem 0.24rem 1.4rem;
+      }
+    }
+  }
+}

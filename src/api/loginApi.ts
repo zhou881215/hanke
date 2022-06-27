@@ -56,7 +56,7 @@ export const getAuthCodeApi = async (phone: string) =>
  * 注册
  */
 export const userRegisterApi = async (params: IRegisterInfo) =>
-  await axios.post("/Api/Login/userRegister", params);
+  await axios.post("http://test.zanbox.net/Api/Login/userRegister", params);
 
 /**
  * 找回密码

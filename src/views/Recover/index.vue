@@ -90,7 +90,7 @@ import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
 import type { ElForm } from "element-plus";
 import { Lock, Phone, Document } from "@element-plus/icons-vue";
-import useRule from "../Register/useRule.ts";
+import useRule from "../Register/useRule";
 import useAuthCode from "../Register/useAuthCode";
 import type { IRecoverInfo } from "../../api/loginApi";
 
@@ -138,3 +138,4 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less" src="./phone.less"></style>

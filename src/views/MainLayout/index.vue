@@ -27,9 +27,8 @@
       <div class="top-tool">
         <div class="tool-logo"><Logo /></div>
         <div class="tool-btn">
-          用户名：{{ userInfo.userName }}； 用户等级：{{
-            userInfo.userRank ? "管理员" : "用户"
-          }}
+          <span>用户名：{{ userInfo.userName }}</span>
+          <span>用户等级：{{ userInfo.userRank ? "管理员" : "用户" }}</span>
           <el-button
             type="primary"
             size="small"
@@ -50,12 +49,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import type { ComputedRef } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
 import { GoodsFilled, Avatar, SwitchButton } from "@element-plus/icons-vue";
 import { UserLocal } from "../../store/loginStore";
 import type { IUserInfo } from "../../store/loginStore";
+import { throttle } from "../../utils";
 
 const store = useStore();
 
@@ -79,6 +79,23 @@ const userInfo: ComputedRef<IUserInfo> = computed(() => {
  * 退出
  */
 const handleLoginOut = () => store.dispatch("loginStore/loginOut");
+
+/**
+ * 尺寸响应
+ */
+const phoneWidth: number = 768;
+const isPhone: Ref<boolean> = ref<boolean>(false);
+const recodeWidth = throttle(() => {
+  isPhone.value = document.documentElement.clientWidth <= phoneWidth;
+}, 1000);
+
+onMounted(() => {
+  if (document.documentElement.clientWidth <= phoneWidth) {
+    isPhone.value = true;
+  }
+  window.addEventListener("recodeWidth", recodeWidth);
+});
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less" src="./phone.less"></style>

@@ -145,7 +145,7 @@
 
 <script lang="ts" setup>
 import { onMounted, computed, ref } from "vue";
-import type { ComputedRef } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
 import {
   Search,
@@ -179,8 +179,8 @@ const { searchParam, handleSearch } = useSearch();
 /**
  * 新增编辑
  */
-const dialogVisible = ref(false);
-const activeId = ref("");
+const dialogVisible: Ref<boolean> = ref<boolean>(false);
+const activeId: Ref<string> = ref<string>("");
 const handleOpenForm = (
   openFlag: boolean, // 是否打开
   fetchFlag?: boolean, // 是否重新查询
@@ -193,9 +193,20 @@ const handleOpenForm = (
   }
 };
 
+/**
+ * 尺寸响应
+ */
+const phoneWidth: number = 768;
+const isPhone = ref<boolean>(false);
+
 onMounted(() => {
   handleSearch();
+  const currentWidth = document.documentElement.clientWidth;
+  if (currentWidth <= phoneWidth) {
+    isPhone.value = true;
+  }
 });
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less" src="./phone.less"></style>
