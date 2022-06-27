@@ -7,12 +7,15 @@ import { ElNotification } from "element-plus";
 
 const service = axios.create({
   timeout: 30000, // 请求 30s 超时
+  // headers: {
+  //   "Content-Type": "application/x-www-form-urlencoded",
+  // },
 }); // 创建一个axios的实例
 
 // 响应拦截器
 service.interceptors.response.use(({ data: result }: any) => {
   const { status, msg, data } = result;
-  if (+status !== 0) {
+  if (status !== "0") {
     ElNotification.error({
       title: "出错了！",
       message: msg,

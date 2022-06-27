@@ -87,13 +87,16 @@
 <script setup lang="ts">
 import { reactive, ref, computed, onUnmounted } from "vue";
 import type { ComputedRef } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { ElNotification } from "element-plus";
 import type { ElForm } from "element-plus";
 import { Lock, Phone, Document } from "@element-plus/icons-vue";
 import useRule from "../Register/useRule";
 import useAuthCode from "../Register/useAuthCode";
 import type { IRecoverInfo } from "../../api/loginApi";
 
+const router = useRouter();
 const store = useStore();
 
 const userLoading: ComputedRef<boolean> = computed(
@@ -125,9 +128,19 @@ const { authCodeText, canSend, getAuthCode, timer } = useAuthCode(
 
 const handlerRecover = (formEl: InstanceType<typeof ElForm> | undefined) => {
   if (!formEl) return;
-  formEl.validate((valid: boolean) => {
+  formEl.validate(async (valid: boolean) => {
     if (valid) {
-      store.dispatch("loginStore/recoverPass", recoverForm);
+      const isSucceed: boolean = await store.dispatch(
+        "loginStore/recoverPass",
+        recoverForm
+      );
+      if (isSucceed) {
+        ElNotification.success({
+          title: "修改成功",
+          message: "请牢记新密码",
+        });
+        router.push({ name: "login" });
+      }
     }
   });
 };

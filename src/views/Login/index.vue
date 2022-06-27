@@ -62,10 +62,12 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import type { ComputedRef } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { User, Lock } from "@element-plus/icons-vue";
 import type { ILoginData } from "../../api/loginApi";
 
+const router = useRouter();
 const store = useStore();
 
 const userLoading: ComputedRef<boolean> = computed(
@@ -79,7 +81,15 @@ const loginForm: ILoginData = reactive({
 
 const remember = ref<boolean>(false);
 
-const submitForm = () => store.dispatch("loginStore/loginIn", loginForm);
+const submitForm = async () => {
+  const isSucceed: boolean = await store.dispatch(
+    "loginStore/loginIn",
+    loginForm
+  );
+  if (isSucceed) {
+    router.push({ name: "mainLayout" });
+  }
+};
 </script>
 
 <style scoped lang="less" src="./index.less"></style>

@@ -2,8 +2,6 @@
  * @Author: Cram
  * @Date: 2022-06-17 09:50:11
  */
-import { useRouter } from "vue-router";
-import { ElNotification } from "element-plus";
 import {
   loginInApi,
   loginOutApi,
@@ -12,8 +10,6 @@ import {
   recoverPassApi,
 } from "../api/loginApi";
 import type { ILoginData, IRegisterInfo, IRecoverInfo } from "../api/loginApi";
-
-const router = useRouter();
 
 export const UserLocal: string = "userLocal";
 
@@ -53,9 +49,9 @@ export default {
       if (flag) {
         commit("setUser", response);
         localStorage.setItem(UserLocal, JSON.stringify(response));
-        router.push({ name: "mainLayout" });
       }
       commit("setLoading", false);
+      return flag;
     },
     /**
      * 注销
@@ -66,9 +62,9 @@ export default {
       if (flag) {
         commit("setUser", null);
         localStorage.removeItem(UserLocal);
-        router.push({ name: "login" });
       }
       commit("setLoading", false);
+      return flag;
     },
     /**
      * 获取验证码
@@ -89,13 +85,8 @@ export default {
     async userRegister({ commit }: any, payload: IRegisterInfo) {
       commit("setLoading", true);
       const { flag } = (await userRegisterApi(payload)) as any;
-      if (flag) {
-        ElNotification.success({
-          title: "注册成功",
-          message: "请等待管理员审核后，再进行登录查询",
-        });
-      }
       commit("setLoading", false);
+      return flag;
     },
     /**
      * 找回密码
@@ -103,14 +94,8 @@ export default {
     async recoverPass({ commit }: any, payload: IRecoverInfo) {
       commit("setLoading", true);
       const { flag } = (await recoverPassApi(payload)) as any;
-      if (flag) {
-        ElNotification.success({
-          title: "修改成功",
-          message: "请牢记新密码",
-        });
-        router.push({ name: "login" });
-      }
       commit("setLoading", false);
+      return flag;
     },
   },
 };

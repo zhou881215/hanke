@@ -8,13 +8,13 @@ import vue from "@vitejs/plugin-vue";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
-  // server: {
-  //   proxy: {
-  //     "/Api": {
-  //       target: "http://test.zanbox.net", // 请求路径/Api前面的都替换成这个
-  //       changeOrigin: true,
-  //       // rewrite: (path) => path.replace(/^\/api/, ""), // 把/api替换成''
-  //     },
-  //   },
-  // },
+  server: {
+    proxy: {
+      "/Api": {
+        target: "http://test.zanbox.net", // 请求路径/Api前面的都替换成这个
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/api/, ""), // 把/api替换成''
+      },
+    },
+  },
 });

@@ -1,12 +1,13 @@
 @import "../../styles/var.less";
 
 .main-wrapper {
-  display: flex;
   width: 100%;
   min-height: 100vh;
-  background-color: @LightColor;
 
   .left-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 200px;
     min-height: 100%;
     border: none;
@@ -34,17 +35,22 @@
 
   .right-layout {
     position: relative;
-    flex: 1;
+    margin-left: 200px;
+    min-height: 100vh;
     background-color: #f0f2f5;
 
     .top-tool {
+      position: fixed;
+      top: 0;
+      z-index: 9;
       display: flex;
+      width: calc(100% - 200px);
       height: 56px;
       justify-content: space-between;
       align-items: center;
       padding: 0 10px;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      background-color: @LightColor;
+      background-color: rgba(255, 255, 255, 0.8);
 
       .tool-logo {
         width: 110px;
@@ -58,8 +64,8 @@
     }
 
     .main-area {
-      height: calc(100% - 56px);
-      padding: 10px 10px 70px 10px;
+      min-height: 100vh;
+      padding: 66px 10px 70px 10px;
     }
   }
 

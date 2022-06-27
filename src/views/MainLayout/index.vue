@@ -27,7 +27,7 @@
       <div class="top-tool">
         <div class="tool-logo"><Logo /></div>
         <div class="tool-btn">
-          <span>用户名：{{ userInfo.userName }}</span>
+          <span>用户名：{{ userInfo.userName }}； </span>
           <span>用户等级：{{ userInfo.userRank ? "管理员" : "用户" }}</span>
           <el-button
             type="primary"
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div class="main-area">
-        <router-view :userInfo="userInfo" />
+        <router-view />
       </div>
       <Copyright />
     </div>
@@ -49,14 +49,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, onUnmounted } from "vue";
-import type { ComputedRef, Ref } from "vue";
+import { computed, onMounted, onUnmounted, provide } from "vue";
+import type { ComputedRef } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { GoodsFilled, Avatar, SwitchButton } from "@element-plus/icons-vue";
 import { UserLocal } from "../../store/loginStore";
 import type { IUserInfo } from "../../store/loginStore";
-import { throttle } from "../../utils";
+import useResize from "./useResize";
 
+const router = useRouter();
 const store = useStore();
 
 const userLoading: ComputedRef<boolean> = computed(
@@ -66,34 +68,40 @@ const userLoading: ComputedRef<boolean> = computed(
 /**
  * 用户
  */
-const userInfo: ComputedRef<IUserInfo> = computed(() => {
+const userInfo: IUserInfo = ((): IUserInfo => {
   const localUserInfo: string | null = localStorage.getItem(UserLocal);
   try {
     return JSON.parse(localUserInfo as string);
   } catch (error) {
-    return {};
+    return {} as IUserInfo;
   }
-});
+})();
+provide("userInfo", userInfo);
 
 /**
  * 退出
  */
-const handleLoginOut = () => store.dispatch("loginStore/loginOut");
+const handleLoginOut = async () => {
+  const isSucceed: boolean = await store.dispatch("loginStore/loginOut");
+  if (isSucceed) {
+    router.push({ name: "login" });
+  }
+};
 
 /**
  * 尺寸响应
  */
-const phoneWidth: number = 768;
-const isPhone: Ref<boolean> = ref<boolean>(false);
-const recodeWidth = throttle(() => {
-  isPhone.value = document.documentElement.clientWidth <= phoneWidth;
-}, 1000);
+const { phoneWidth, isPhone, recodeWidth } = useResize();
 
 onMounted(() => {
   if (document.documentElement.clientWidth <= phoneWidth) {
     isPhone.value = true;
   }
-  window.addEventListener("recodeWidth", recodeWidth);
+  window.addEventListener("resize", recodeWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", recodeWidth);
 });
 </script>
 

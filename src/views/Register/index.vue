@@ -98,13 +98,16 @@
 <script setup lang="ts">
 import { reactive, ref, computed, onUnmounted } from "vue";
 import type { ComputedRef } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { ElNotification } from "element-plus";
 import type { ElForm } from "element-plus";
 import { User, Lock, Phone, Document } from "@element-plus/icons-vue";
 import useRule from "./useRule";
 import useAuthCode from "./useAuthCode";
 import type { IRegisterInfo } from "../../api/loginApi";
 
+const router = useRouter();
 const store = useStore();
 
 const userLoading: ComputedRef<boolean> = computed(
@@ -137,9 +140,19 @@ let { authCodeText, canSend, getAuthCode, timer } = useAuthCode(
 
 const handlerRegister = (formEl: InstanceType<typeof ElForm> | undefined) => {
   if (!formEl) return;
-  formEl.validate((valid: boolean) => {
+  formEl.validate(async (valid: boolean) => {
     if (valid) {
-      store.dispatch("loginStore/userRegister", registerForm);
+      const isSucceed: boolean = await store.dispatch(
+        "loginStore/userRegister",
+        registerForm
+      );
+      if (isSucceed) {
+        ElNotification.success({
+          title: "注册成功",
+          message: "请等待管理员审核后，再进行登录查询",
+        });
+        router.push({ name: "login" });
+      }
     }
   });
 };

@@ -27,6 +27,7 @@ export interface IProduct {
   sfzy: string;
   zyzq: string;
   ztfy: string;
+  [key: string]: any;
 }
 
 export interface ISearchParam {
