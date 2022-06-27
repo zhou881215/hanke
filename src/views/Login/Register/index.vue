@@ -65,8 +65,8 @@
             <el-button
               class="code-btn"
               size="large"
-              :disabled="authCodeFlag || !canSend"
-              @click="getAuthCode"
+              :disabled="userLoading || !canSend"
+              @click="getAuthCode(registerForm.loginPhone)"
             >
               {{ authCodeText }}
             </el-button>
@@ -99,15 +99,12 @@
 import { reactive, ref, computed, onUnmounted } from "vue";
 import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
 import type { ElForm } from "element-plus";
 import { User, Lock, Phone, Document } from "@element-plus/icons-vue";
 import useRule from "./useRule";
 import useAuthCode from "./useAuthCode";
 import type { IRegisterInfo } from "../../../api/loginApi";
 
-const router = useRouter();
 const store = useStore();
 
 const userLoading: ComputedRef<boolean> = computed(
@@ -132,25 +129,17 @@ const { rules, RegPhone } = useRule(registerForm);
 /**
  * 验证码
  */
-let { authCodeFlag, authCodeText, canSend, getAuthCode, timer } = useAuthCode(
+let { authCodeText, canSend, getAuthCode, timer } = useAuthCode(
+  store,
   registerForm,
   RegPhone
 );
 
 const handlerRegister = (formEl: InstanceType<typeof ElForm> | undefined) => {
   if (!formEl) return;
-  formEl.validate(async (valid: boolean) => {
+  formEl.validate((valid: boolean) => {
     if (valid) {
-      const result = await store.dispatch(
-        "loginStore/userRegister",
-        registerForm
-      );
-      if (result) {
-        ElMessage.success("注册成功");
-        router.push({ name: "login" });
-      } else {
-        ElMessage.error("注册失败");
-      }
+      store.dispatch("loginStore/userRegister", registerForm);
     }
   });
 };

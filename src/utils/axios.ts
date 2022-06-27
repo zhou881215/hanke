@@ -10,16 +10,16 @@ const service = axios.create({
 }); // 创建一个axios的实例
 
 // 响应拦截器
-service.interceptors.response.use((response: any) => {
-  if (response.status !== 0) {
-    ElNotification({
+service.interceptors.response.use(({ data: result }: any) => {
+  const { status, msg, data } = result;
+  if (+status !== 0) {
+    ElNotification.error({
       title: "出错了！",
-      message: response.msg,
-      type: "error",
+      message: msg,
     });
-    return null;
+    return { flag: false, response: msg };
   }
-  return response;
+  return { flag: true, response: data };
 });
 
 export default service;

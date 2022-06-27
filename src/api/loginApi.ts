@@ -12,19 +12,19 @@ export interface ILoginData {
 
 // 注册
 export interface IRegisterInfo {
-  loginId: "";
-  loginPwd: "";
-  loginPwdCheck: "";
-  loginPhone: "";
-  loginAuth: "";
+  loginId: string;
+  loginPwd: string;
+  loginPwdCheck: string;
+  loginPhone: string;
+  loginAuth: string;
 }
 
 // 重置
 export interface IRecoverInfo {
-  loginPwd: "";
-  loginPwdCheck: "";
-  loginPhone: "";
-  loginAuth: "";
+  loginPwd: string;
+  loginPwdCheck: string;
+  loginPhone: string;
+  loginAuth: string;
 }
 
 export function delay(duration: number) {
@@ -35,14 +35,31 @@ export function delay(duration: number) {
   });
 }
 
+/**
+ * 登录
+ */
 export const loginInApi = async (params: ILoginData) =>
-  await axios.post("../Api/Login/loginIn", params);
-
-export const loginOutApi = async (params: ILoginData) =>
   await axios.post("/Api/Login/loginIn", params);
 
-export const userRegisterApi = async (params: ILoginData) =>
-  await axios.post("/Api/Login/loginIn", params);
+/**
+ * 注销
+ */
+export const loginOutApi = async () => await axios.post("/Api/Login/loginOut");
 
-export const recoverPassApi = async (params: ILoginData) =>
-  await axios.post("/Api/Login/loginIn", params);
+/**
+ * 发验证码
+ */
+export const getAuthCodeApi = async (phone: string) =>
+  await axios.post("/Api/Login/getAuthCode", { phone });
+
+/**
+ * 注册
+ */
+export const userRegisterApi = async (params: IRegisterInfo) =>
+  await axios.post("/Api/Login/userRegister", params);
+
+/**
+ * 找回密码
+ */
+export const recoverPassApi = async (params: IRecoverInfo) =>
+  await axios.post("/Api/Login/recoverPass", params);

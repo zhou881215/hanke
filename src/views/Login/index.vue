@@ -63,12 +63,9 @@
 import { ref, reactive, computed } from "vue";
 import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
 import { User, Lock } from "@element-plus/icons-vue";
 import type { ILoginData } from "../../api/loginApi";
 
-const router = useRouter();
 const store = useStore();
 
 const userLoading: ComputedRef<boolean> = computed(
@@ -79,15 +76,10 @@ const loginForm: ILoginData = reactive({
   loginId: "",
   loginPwd: "",
 });
+
 const remember = ref<boolean>(false);
-const submitForm = async () => {
-  const user = await store.dispatch("loginStore/loginIn", loginForm);
-  if (user) {
-    router.push({ name: "mainLayout" });
-  } else {
-    ElMessage.error("账号或密码错误");
-  }
-};
+
+const submitForm = () => store.dispatch("loginStore/loginIn", loginForm);
 </script>
 
 <style scoped lang="less" src="./index.less"></style>

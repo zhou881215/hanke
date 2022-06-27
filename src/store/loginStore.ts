@@ -2,10 +2,21 @@
  * @Author: Cram
  * @Date: 2022-06-17 09:50:11
  */
-import { delay, loginInApi } from "../api/loginApi";
-import type { ILoginData } from "../api/loginApi";
+import { useRouter } from "vue-router";
+import { ElNotification } from "element-plus";
+import {
+  loginInApi,
+  loginOutApi,
+  getAuthCodeApi,
+  userRegisterApi,
+  recoverPassApi,
+} from "../api/loginApi";
+import type { ILoginData, IRegisterInfo, IRecoverInfo } from "../api/loginApi";
+
+const router = useRouter();
 
 export const UserLocal: string = "userLocal";
+
 export interface ILoginUser {
   userInfo: IUserInfo;
   userLoading: boolean;
@@ -38,41 +49,68 @@ export default {
      */
     async loginIn({ commit }: any, params: ILoginData) {
       commit("setLoading", true);
-      const currentUser = await loginInApi(params);
-      commit("setUser", currentUser);
+      const { flag, response } = (await loginInApi(params)) as any;
+      if (flag) {
+        commit("setUser", response);
+        localStorage.setItem(UserLocal, JSON.stringify(response));
+        router.push({ name: "mainLayout" });
+      }
       commit("setLoading", false);
-      localStorage.setItem(UserLocal, JSON.stringify(currentUser));
-      return currentUser;
     },
     /**
-     * 登出
+     * 注销
      */
     async loginOut({ commit }: any) {
       commit("setLoading", true);
-      await delay(1000);
-      commit("setUser", null);
+      const { flag } = (await loginOutApi()) as any;
+      if (flag) {
+        commit("setUser", null);
+        localStorage.removeItem(UserLocal);
+        router.push({ name: "login" });
+      }
       commit("setLoading", false);
-      localStorage.removeItem(UserLocal);
+    },
+    /**
+     * 获取验证码
+     */
+    async getAuthCode({ commit }: any, phone: string) {
+      commit("setLoading", true);
+      const { flag, response } = (await getAuthCodeApi(phone)) as any;
+      let count = 60;
+      if (!flag) {
+        count = parseInt(response.substring(2));
+      }
+      commit("setLoading", false);
+      return count;
     },
     /**
      * 注册
      */
-    async userRegister({ commit }: any, payload: any) {
+    async userRegister({ commit }: any, payload: IRegisterInfo) {
       commit("setLoading", true);
-      await delay(1000);
-      const mockResult: boolean = Math.random() > 0.5;
+      const { flag } = (await userRegisterApi(payload)) as any;
+      if (flag) {
+        ElNotification.success({
+          title: "注册成功",
+          message: "请等待管理员审核后，再进行登录查询",
+        });
+      }
       commit("setLoading", false);
-      return mockResult;
     },
     /**
      * 找回密码
      */
-    async recoverPass({ commit }: any, payload: any) {
+    async recoverPass({ commit }: any, payload: IRecoverInfo) {
       commit("setLoading", true);
-      await delay(1000);
-      const mockResult: boolean = Math.random() > 0.5;
+      const { flag } = (await recoverPassApi(payload)) as any;
+      if (flag) {
+        ElNotification.success({
+          title: "修改成功",
+          message: "请牢记新密码",
+        });
+        router.push({ name: "login" });
+      }
       commit("setLoading", false);
-      return mockResult;
     },
   },
 };

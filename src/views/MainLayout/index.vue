@@ -53,12 +53,10 @@
 import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
 import { GoodsFilled, Avatar, SwitchButton } from "@element-plus/icons-vue";
 import { UserLocal } from "../../store/loginStore";
 import type { IUserInfo } from "../../store/loginStore";
 
-const router = useRouter();
 const store = useStore();
 
 const userLoading: ComputedRef<boolean> = computed(
@@ -80,10 +78,7 @@ const userInfo: ComputedRef<IUserInfo> = computed(() => {
 /**
  * 退出
  */
-const handleLoginOut = async () => {
-  await store.dispatch("loginStore/loginOut");
-  router.push({ name: "login" });
-};
+const handleLoginOut = () => store.dispatch("loginStore/loginOut");
 </script>
 
 <style scoped lang="less" src="./index.less"></style>

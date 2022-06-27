@@ -4,29 +4,25 @@
  */
 import { ref, computed } from "vue";
 
-export default function (registerForm: any, RegPhone: RegExp) {
-  const authCodeFlag = ref<boolean>(false);
-
+export default function (store: any, registerForm: any, RegPhone: RegExp) {
   const authCodeText = ref<string>("获取验证码");
 
   const canSend = computed(() => RegPhone.test(registerForm.loginPhone));
 
   let timer: any = null;
 
-  const getAuthCode = async () => {
-    authCodeFlag.value = true;
-    let count = 60;
+  const getAuthCode = async (phone: string) => {
+    let count = await store.dispatch("loginStore/getAuthCode", phone);
     authCodeText.value = count + "s";
     timer = setInterval(() => {
       count--;
       authCodeText.value = count + "s";
       if (count <= 0) {
-        authCodeFlag.value = false;
         authCodeText.value = "获取验证码";
         clearInterval(timer);
       }
     }, 1000);
   };
 
-  return { authCodeFlag, authCodeText, canSend, getAuthCode, timer };
+  return { authCodeText, canSend, getAuthCode, timer };
 }

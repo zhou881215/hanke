@@ -35,8 +35,8 @@
             <el-button
               class="code-btn"
               size="large"
-              :disabled="authCodeFlag || !canSend"
-              @click="getAuthCode"
+              :disabled="userLoading || !canSend"
+              @click="getAuthCode(recoverForm.loginPhone)"
             >
               {{ authCodeText }}
             </el-button>
@@ -85,18 +85,15 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from "vue";
+import { reactive, ref, computed, onUnmounted } from "vue";
 import type { ComputedRef } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { ElMessage } from "element-plus";
 import type { ElForm } from "element-plus";
 import { Lock, Phone, Document } from "@element-plus/icons-vue";
 import useRule from "../Register/useRule";
 import useAuthCode from "../Register/useAuthCode";
 import type { IRecoverInfo } from "../../../api/loginApi";
 
-const router = useRouter();
 const store = useStore();
 
 const userLoading: ComputedRef<boolean> = computed(
@@ -120,28 +117,24 @@ const { rules, RegPhone } = useRule(recoverForm);
 /**
  * 验证码
  */
-const { authCodeFlag, authCodeText, canSend, getAuthCode } = useAuthCode(
+const { authCodeText, canSend, getAuthCode, timer } = useAuthCode(
+  store,
   recoverForm,
   RegPhone
 );
 
 const handlerRecover = (formEl: InstanceType<typeof ElForm> | undefined) => {
   if (!formEl) return;
-  formEl.validate(async (valid: boolean) => {
+  formEl.validate((valid: boolean) => {
     if (valid) {
-      const result = await store.dispatch(
-        "loginStore/recoverPass",
-        recoverForm
-      );
-      if (result) {
-        ElMessage.success("修改成功");
-        router.push({ name: "login" });
-      } else {
-        ElMessage.error("修改失败");
-      }
+      store.dispatch("loginStore/recoverPass", recoverForm);
     }
   });
 };
+
+onUnmounted(() => {
+  clearInterval(timer);
+});
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
