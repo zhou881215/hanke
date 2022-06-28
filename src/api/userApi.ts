@@ -6,6 +6,7 @@ export interface IUser {
   id: string;
   userName: string;
   userPass: string;
+  phoneNumber: string;
   regdate: string;
   isAudit: boolean;
 }

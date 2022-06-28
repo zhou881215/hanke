@@ -33,6 +33,7 @@
           {{ viewPass ? userPass : Array(userPass.length).fill("*").join("") }}
         </template>
       </el-table-column>
+      <el-table-column prop="phoneNumber" label="手机号码" />
       <el-table-column prop="regdate" label="注册时间" />
       <el-table-column prop="isAudit" label="是否审核">
         <template #default="{ row: { isAudit } }">

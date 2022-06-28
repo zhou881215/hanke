@@ -6,7 +6,6 @@
   <el-dialog
     v-model="props.userDialog"
     title="用户详情"
-    draggable
     :width="dialogWidth"
     :before-close="() => confirmClose()"
   >
@@ -37,7 +36,15 @@
             </template>
             {{ userDetail.userPass }}
           </el-descriptions-item>
-          <el-descriptions-item :span="2">
+          <el-descriptions-item>
+            <template #label>
+              <div class="cell-item">
+                <el-icon><Lock /></el-icon> 手机号码
+              </div>
+            </template>
+            {{ userDetail.phoneNumber }}
+          </el-descriptions-item>
+          <el-descriptions-item>
             <template #label>
               <div class="cell-item">
                 <el-icon><Clock /></el-icon> 注册时间

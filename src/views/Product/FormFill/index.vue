@@ -6,7 +6,6 @@
   <el-dialog
     v-model="props.dialogVisible"
     :title="(props.activeId ? '修改' : '新增') + '数据'"
-    draggable
     :width="dialogWidth"
     :before-close="handleClose"
   >

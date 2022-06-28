@@ -39,11 +39,12 @@ export default {
       const result = Array(pageSize)
         .fill("")
         .map(() => ({
-          id: Math.random().toString(32).substring(2, 4),
-          userName: Math.random().toString(32).substring(2, 5),
-          userPass: Math.random().toString(32).substring(2, 10),
-          regdate: new Date(Math.random() * 2000000000000).toLocaleDateString(),
-          isAudit: Math.random() > 0.3,
+          id: Math.random().toString(32).substring(2),
+          userName: Math.random().toString(32).substring(2),
+          userPass: Math.random().toString(32).substring(2),
+          phoneNumber: Math.random().toString(8).substring(2, 13),
+          regdate: new Date(Math.random() * 10 ** 12).toLocaleDateString(),
+          isAudit: Math.random() > 0.1,
         }));
       commit("setUser", result);
       commit("setLoading", false);
@@ -54,19 +55,20 @@ export default {
     async fetchSingleUser({ commit }: any, param: any) {
       await delay(300);
       const userDetail: IUserDetail = {
-        id: Math.random().toString(32).substring(2, 4),
-        userName: Math.random().toString(32).substring(2, 5),
-        userPass: Math.random().toString(32).substring(2, 10),
-        regdate: new Date(Math.random() * 2000000000000).toLocaleDateString(),
-        isAudit: Math.random() > 0.7,
-        userTrack: Array(5)
+        id: Math.random().toString(32).substring(2, 8),
+        userName: Math.random().toString(32).substring(2),
+        userPass: Math.random().toString(32).substring(2),
+        phoneNumber: Math.random().toString(8).substring(2, 13),
+        regdate: new Date(Math.random() * 10 ** 12).toLocaleDateString(),
+        isAudit: Math.random() > 0.1,
+        userTrack: Array(parseInt(Math.random() * 10 + ""))
           .fill("")
           .map(() => ({
-            loginTime: new Date(
-              Math.random() * 2000000000000
-            ).toLocaleDateString(),
+            loginTime: new Date(Math.random() * 10 ** 12).toLocaleDateString(),
             visitLog: ["/product"],
-            searchLog: ["产品1", "产品3", "产品3"],
+            searchLog: Array(parseInt(Math.random() * 100 + ""))
+              .fill("")
+              .map(() => "产品" + Math.random().toString(32).substring(2)),
           })),
       };
       commit("setUserDetail", userDetail);
