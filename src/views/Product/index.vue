@@ -75,6 +75,8 @@
       border
       stripe
       style="width: 100%"
+      :header-cell-style="{ background: '#E6E8EB', color: '#303133' }"
+      :table-layout="'auto'"
     >
       <template #empty>
         <el-empty description="哎呀，暂时没有数据！" />

@@ -39,27 +39,28 @@ export function delay(duration: number) {
  * 登录
  */
 export const loginInApi = async (params: ILoginData) =>
-  await axios.post("/Api/Login/loginIn", params);
+  await axios.post("http://test.zanbox.net/Api/Login/loginIn", params);
 
 /**
  * 注销
  */
-export const loginOutApi = async () => await axios.post("/Api/Login/loginOut");
+export const loginOutApi = async () =>
+  await axios.post("http://test.zanbox.net/Api/Login/loginOut");
 
 /**
  * 发验证码
  */
 export const getAuthCodeApi = async (phone: string) =>
-  await axios.post("/Api/Login/getAuthCode", { phone });
+  await axios.post("http://test.zanbox.net/Api/Login/getAuthCode", { phone });
 
 /**
  * 注册
  */
 export const userRegisterApi = async (params: IRegisterInfo) =>
-  await axios.post("/Api/Login/userRegister", params);
+  await axios.post("http://test.zanbox.net/Api/Login/userRegister", params);
 
 /**
  * 找回密码
  */
 export const recoverPassApi = async (params: IRecoverInfo) =>
-  await axios.post("/Api/Login/recoverPass", params);
+  await axios.post("http://test.zanbox.net/Api/Login/recoverPass", params);
