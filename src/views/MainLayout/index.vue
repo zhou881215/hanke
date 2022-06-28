@@ -4,25 +4,7 @@
 -->
 <template>
   <div class="main-wrapper">
-    <el-menu
-      class="left-menu"
-      default-active="1"
-      :collapse-transition="false"
-      router
-    >
-      <el-menu-item index="1" :route="{ name: 'product' }">
-        <el-icon><GoodsFilled /></el-icon>
-        <template #title>产品中心</template>
-      </el-menu-item>
-      <el-menu-item
-        v-if="userInfo.userRank"
-        index="2"
-        :route="{ name: 'user' }"
-      >
-        <el-icon><Avatar /></el-icon>
-        <template #title>用户管理</template>
-      </el-menu-item>
-    </el-menu>
+    <LeftMenu class="pc-menu" />
     <div class="right-layout">
       <div class="top-tool">
         <div class="tool-logo">
@@ -54,7 +36,7 @@
       v-model="drawerFlag"
       :with-header="false"
     >
-      <span>Hi there!</span>
+      <LeftMenu />
     </el-drawer>
   </div>
 </template>
@@ -64,9 +46,10 @@ import { computed, onMounted, onUnmounted, provide } from "vue";
 import type { ComputedRef } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { GoodsFilled, Avatar, SwitchButton } from "@element-plus/icons-vue";
+import { SwitchButton } from "@element-plus/icons-vue";
 import { UserLocal } from "../../store/loginStore";
 import type { IUserInfo } from "../../store/loginStore";
+import LeftMenu from "./LeftMenu/index.vue";
 import useResize from "./useResize";
 
 const router = useRouter();
@@ -121,9 +104,10 @@ onUnmounted(() => {
 <style scoped lang="less" src="./phone.less"></style>
 <style lang="less">
 @import "../../styles/var.less";
+
 @media (max-width: 768px) {
   .phone-drawer {
-    background-color: #001529;
+    background-color: @DarkColor;
 
     .el-drawer__body {
       padding: 0;

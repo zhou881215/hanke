@@ -24,7 +24,7 @@
       <template #empty>
         <el-empty description="哎呀，暂时没有数据！" />
       </template>
-      <el-table-column fixed prop="id" label="用户ID" width="120" />
+      <el-table-column prop="id" label="用户ID" />
       <el-table-column prop="userName" label="用户名" />
       <el-table-column prop="userPass" label="密码">
         <template #default="{ row: { userPass } }">
@@ -62,7 +62,7 @@
         v-model:page-size="fetchParam.pageSize"
         :background="true"
         :page-sizes="[10, 20, 40, 80]"
-        layout="total, sizes, prev, pager, next, jumper"
+        :layout="paginationLayout"
         :total="24"
         @size-change="handleFetch"
         @current-change="handleFetch"
@@ -77,8 +77,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, computed, ref } from "vue";
-import type { ComputedRef } from "vue";
+import { onMounted, computed, ref, inject } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
 import { View, Hide, Edit, Delete } from "@element-plus/icons-vue";
 import useFetch from "./useFetch";
@@ -92,6 +92,14 @@ const userLoading: ComputedRef<boolean> = computed(
 );
 const userData: ComputedRef<Array<IUser>> = computed(
   () => store.state.userStore.userData
+);
+
+/**
+ * 响应式
+ */
+const paginationLayout: Ref<string> = inject(
+  "paginationLayout",
+  ref<string>("total, sizes, prev, pager, next, jumper")
 );
 
 /**
@@ -128,3 +136,4 @@ onMounted(() => {
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less" src="./phone.less"></style>

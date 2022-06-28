@@ -7,11 +7,12 @@
     v-model="props.userDialog"
     title="用户详情"
     draggable
+    :width="dialogWidth"
     :before-close="() => confirmClose()"
   >
     <div class="detail-main">
       <div class="detail-descriptions">
-        <el-descriptions border>
+        <el-descriptions border :column="isPhone ? 1 : 3">
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
@@ -103,8 +104,8 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, computed } from "vue";
-import type { ComputedRef } from "vue";
+import { watch, computed, inject, ref } from "vue";
+import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
 import {
   Monitor,
@@ -121,6 +122,14 @@ const randomType = ["", "success", "info", "danger", "warning"];
 const store = useStore();
 const userDetail: ComputedRef<IUserDetail> = computed(
   () => store.state.userStore.userDetail
+);
+
+/**
+ * 响应式
+ */
+const isPhone: Ref<boolean> = inject("isPhone", ref<boolean>(false));
+const dialogWidth: ComputedRef<string> = computed(() =>
+  isPhone.value ? "94%" : "60%"
 );
 
 const props = defineProps<{
@@ -168,3 +177,4 @@ const confirmClose = (fetchFlag?: boolean) => {
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less" src="./phone.less"></style>

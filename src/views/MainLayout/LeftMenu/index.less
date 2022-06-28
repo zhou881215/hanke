@@ -1,0 +1,30 @@
+@import "../../../styles/var.less";
+
+.left-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    min-height: 100vh;
+    border: none;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    background-color: @DarkColor;
+
+    .el-menu-item {
+        color: rgba(255, 255, 255, 0.6);
+
+        &:hover {
+            color: @LightColor;
+            background-color: transparent;
+        }
+    }
+
+    .is-active {
+        color: @LightColor;
+        background-color: @brandColor;
+
+        &:hover {
+            background-color: @brandColor;
+        }
+    }
+}

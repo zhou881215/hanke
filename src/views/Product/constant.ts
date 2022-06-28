@@ -4,7 +4,7 @@
  */
 export const ProColumn = [
   { prop: "xh", label: "序号", width: 80 },
-  { prop: "lb", label: "类别", width: 100 },
+  { prop: "lb", label: "类别", width: 100, select: true },
   { prop: "cpmc", label: "产品名称", width: 150 },
   { prop: "jcxm", label: "检测项目", width: 250 },
   { prop: "xmbm", label: "项目别名", width: 150 },

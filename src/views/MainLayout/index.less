@@ -4,40 +4,11 @@
   width: 100%;
   min-height: 100vh;
 
-  .left-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 200px;
-    min-height: 100%;
-    border: none;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    background-color: #001529;
-
-    .el-menu-item {
-      color: rgba(255, 255, 255, 0.6);
-
-      &:hover {
-        color: @LightColor;
-        background-color: transparent;
-      }
-    }
-
-    .is-active {
-      color: @LightColor;
-      background-color: @brandColor;
-
-      &:hover {
-        background-color: @brandColor;
-      }
-    }
-  }
-
   .right-layout {
     position: relative;
     margin-left: 200px;
     min-height: 100vh;
-    background-color: #f0f2f5;
+    background-color: @baseFill;
 
     .top-tool {
       position: fixed;

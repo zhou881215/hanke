@@ -25,11 +25,19 @@
         :model="productDetail"
       >
         <el-row :gutter="10">
-          <el-col :xs="24" :sm="12" :md="8" :lg="6">
-            <el-form-item label="类别">
+          <el-col
+            v-for="item in props.showColumn"
+            :xs="24"
+            :sm="12"
+            :md="8"
+            :lg="6"
+            :key="item.prop"
+          >
+            <el-form-item :label="item.label">
               <el-select
+                v-if="item.select"
                 :disabled="saveSingleLoading"
-                v-model="productDetail.lb"
+                v-model="productDetail[item.prop]"
               >
                 <el-option
                   v-for="item in typeOptions"
@@ -38,20 +46,10 @@
                   :value="item.value"
                 />
               </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            v-for="item in detailColumn"
-            :xs="24"
-            :sm="12"
-            :md="8"
-            :lg="6"
-            :key="item.prop"
-          >
-            <el-form-item :label="item.label">
               <el-input
+                v-else
                 :disabled="saveSingleLoading"
-                v-model="productDetail[item.xh]"
+                v-model="productDetail[item.prop]"
               />
             </el-form-item>
           </el-col>
@@ -124,11 +122,6 @@ watch(
 );
 
 /**
- * 权限
- */
-const detailColumn = props.showColumn.filter(({ prop }: any) => prop !== "lb");
-
-/**
  * 关闭
  */
 const handleClose = () => {
@@ -155,9 +148,12 @@ const clearStoreDetail = (fetchFlag?: boolean) => {
 <style scoped lang="less" src="./index.less"></style>
 <style scoped lang="less" src="./phone.less"></style>
 <style>
-@media (max-width: 768px) {
+@media (max-width: 450px) {
   .el-message-box {
     width: 80%;
+  }
+  .el-dialog__body {
+    padding: 0.24rem;
   }
 }
 </style>

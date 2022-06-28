@@ -153,11 +153,9 @@ const showColumn = ProColumn.filter(
 /**
  * 响应式
  */
-const isPhone: Ref<boolean> = inject("isPhone", ref<boolean>(false));
-const paginationLayout: ComputedRef<string> = computed(() =>
-  isPhone.value
-    ? "total, prev, next, jumper"
-    : "total, sizes, prev, pager, next, jumper"
+const paginationLayout: Ref<string> = inject(
+  "paginationLayout",
+  ref<string>("total, sizes, prev, pager, next, jumper")
 );
 
 /**
