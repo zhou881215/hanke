@@ -3,6 +3,7 @@
  * @Date: 2022-06-18 22:58:46
  */
 import { delay } from "../api/loginApi";
+import { fetchProductApi } from "../api/productApi";
 import type { IProduct, ISearchParam } from "../api/productApi";
 import { cloneDeep } from "../utils";
 
@@ -63,19 +64,16 @@ export default {
     },
   },
   actions: {
-    async fetchProduct({ commit }: any, param: ISearchParam) {
+    async fetchProduct({ commit }: any, payload: ISearchParam) {
       commit("setLoading", true);
-      await delay(1000);
-      const { pageSize } = param;
-      const result = Array(pageSize)
-        .fill("")
-        .map(() => ({
-          lb: Math.random().toString(32).substring(2, 8),
-        }));
-      commit("setProduct", result);
+
+      const { flag, response } = (await fetchProductApi(payload)) as any;
+      if (flag) {
+        commit("setProduct", response);
+      }
       commit("setLoading", false);
     },
-    async fetchDetail({ commit }: any, param: string) {
+    async fetchDetail({ commit }: any, payload: string) {
       await delay(300);
       const result: IProduct = {
         lb: Math.random().toString(32).substring(2, 8),

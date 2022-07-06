@@ -2,6 +2,8 @@
  * @Author: Cram
  * @Date: 2022-06-18 22:16:12
  */
+import { axios } from "../utils";
+
 export interface IProduct {
   id?: string;
   xh: string;
@@ -38,3 +40,9 @@ export interface ISearchParam {
   pageSize: number;
   pageNo: number;
 }
+
+/**
+ * 登录
+ */
+export const fetchProductApi = async (params: ISearchParam) =>
+  await axios.post("http://test.zanbox.net/Api/Product/fetchProduct", params);
