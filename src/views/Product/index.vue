@@ -4,11 +4,21 @@
 -->
 <template>
   <el-form :inline="true" :model="searchParam" class="search-area">
-    <el-form-item label="检测标准">
+    <el-form-item label="产品类别">
+      <el-select :disabled="productLoading" v-model="searchParam.lb">
+        <el-option
+          v-for="item in categoryOptions"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        />
+      </el-select>
+    </el-form-item>
+    <el-form-item label="产品名称">
       <el-input
         :disabled="productLoading"
-        v-model="searchParam.jcbz"
-        placeholder="检测标准"
+        v-model="searchParam.cpmc"
+        placeholder="产品名称"
       />
     </el-form-item>
     <el-form-item label="检测项目">
@@ -18,18 +28,11 @@
         placeholder="检测项目"
       />
     </el-form-item>
-    <el-form-item label="产品类别">
+    <el-form-item label="检测标准">
       <el-input
         :disabled="productLoading"
-        v-model="searchParam.lb"
-        placeholder="产品类别"
-      />
-    </el-form-item>
-    <el-form-item label="产品名称">
-      <el-input
-        :disabled="productLoading"
-        v-model="searchParam.cpmc"
-        placeholder="产品名称"
+        v-model="searchParam.jcbz"
+        placeholder="检测标准"
       />
     </el-form-item>
     <el-form-item>
@@ -52,14 +55,14 @@
   </el-form>
   <div class="product-main">
     <div class="product-inset">
-      <el-upload
+      <!-- <el-upload
         class="doc-upload"
         action="https://jsonplaceholder.typicode.com/posts/"
         :show-file-list="false"
         accept=".xlsx,.xls"
       >
         <el-button type="primary" :icon="Upload">导入</el-button>
-      </el-upload>
+      </el-upload> -->
       <el-button
         type="primary"
         :icon="CirclePlus"
@@ -71,7 +74,7 @@
     <el-table
       v-loading="productLoading"
       element-loading-text="Loading..."
-      :data="productData"
+      :data="productData.list"
       border
       stripe
       style="width: 100%"
@@ -101,11 +104,11 @@
     </el-table>
     <div class="pagination-wrapper">
       <el-pagination
-        v-model:currentPage="searchParam.pageNo"
+        v-model:currentPage="searchParam.p"
         v-model:page-size="searchParam.pageSize"
         :background="true"
         :layout="paginationLayout"
-        :total="400"
+        :total="+productData.count"
         @size-change="() => handleSearch()"
         @current-change="() => handleSearch()"
       />
@@ -123,16 +126,14 @@
 import { onMounted, computed, ref, inject } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
-import {
-  Search,
-  Refresh,
-  Upload,
-  CirclePlus,
-  Edit,
-} from "@element-plus/icons-vue";
+import { Search, Refresh, CirclePlus, Edit } from "@element-plus/icons-vue";
 import useSearch from "./useSearch";
-import type { IProduct } from "../../api/productApi";
-import type { IUserInfo } from "../../store/loginStore";
+import type {
+  ICategoryOptions,
+  IProduct,
+  IProductData,
+} from "../../api/productApi";
+import type { IUserInfo } from "../../api/loginApi";
 import { ProColumn } from "./constant";
 import FormFill from "./FormFill/index.vue";
 
@@ -140,7 +141,10 @@ const store = useStore();
 const productLoading: ComputedRef<boolean> = computed(
   () => store.state.productStore.productLoading
 );
-const productData: ComputedRef<Array<IProduct>> = computed(
+const categoryOptions: ComputedRef<Array<ICategoryOptions>> = computed(
+  () => store.state.productStore.categoryOptions
+);
+const productData: ComputedRef<IProductData> = computed(
   () => store.state.productStore.productData
 );
 
@@ -148,9 +152,9 @@ const productData: ComputedRef<Array<IProduct>> = computed(
  * 权限
  */
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
-const showColumn = ProColumn.filter(
-  ({ prop }) => !((prop === "cb" || prop === "gys") && !userInfo.userRank)
-);
+const showColumn = ProColumn.filter(({ prop }) => {
+  return userInfo.userRank === "1" || (prop !== "cb" && prop !== "gys");
+});
 
 /**
  * 响应式
@@ -175,15 +179,14 @@ const handleOpenForm = (
   fetchFlag?: boolean, // 是否重新查询
   row?: IProduct
 ) => {
-  activeId.value = row ? row.lb : "";
+  activeId.value = row ? (row.id as string) : "";
   dialogVisible.value = openFlag;
-  if (fetchFlag) {
-    handleSearch();
-  }
+  fetchFlag && handleSearch();
 };
 
-onMounted(() => {
-  handleSearch();
+onMounted(async () => {
+  await store.dispatch("productStore/fetchProductCategory");
+  await handleSearch();
 });
 </script>
 

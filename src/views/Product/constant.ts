@@ -27,28 +27,3 @@ export const ProColumn = [
   { prop: "zyzq", label: "制样周期", width: 150 },
   { prop: "ztfy", label: "制样费用", width: 150 },
 ];
-
-export const typeOptions = [
-  { value: "产品类" },
-  { value: "声学" },
-  { value: "阻燃" },
-  { value: "塑料" },
-  { value: "橡胶" },
-  { value: "金属" },
-  { value: "纺织品" },
-  { value: "可靠性" },
-  { value: "化学" },
-  { value: "建材" },
-  { value: "涂层镀层" },
-  { value: "包装" },
-  { value: "食品" },
-  { value: "食品接触材料" },
-  { value: "油品" },
-  { value: "杂项" },
-  { value: "轻工" },
-  { value: "轻工产品" },
-  { value: "半导体" },
-  { value: "化妆品" },
-  { value: "电工电子" },
-  { value: "电线电缆" },
-];

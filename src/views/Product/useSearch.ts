@@ -16,7 +16,7 @@ export default function () {
     lb: "",
     cpmc: "",
     pageSize: 10,
-    pageNo: 1,
+    p: 1,
   };
 
   const searchParam = ref<ISearchParam>(cloneDeep(defaultSearch));

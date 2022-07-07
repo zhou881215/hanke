@@ -13,7 +13,11 @@
       <el-icon><GoodsFilled /></el-icon>
       <template #title>产品中心</template>
     </el-menu-item>
-    <el-menu-item v-if="userInfo.userRank" index="2" :route="{ name: 'user' }">
+    <el-menu-item
+      v-if="userInfo.userRank === '1'"
+      index="2"
+      :route="{ name: 'user' }"
+    >
       <el-icon><Avatar /></el-icon>
       <template #title>用户管理</template>
     </el-menu-item>
@@ -23,7 +27,7 @@
 <script setup lang="ts" name="LeftMenu">
 import { inject } from "vue";
 import { GoodsFilled, Avatar } from "@element-plus/icons-vue";
-import type { IUserInfo } from "../../../store/loginStore";
+import type { IUserInfo } from "../../../api/loginApi";
 
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
 </script>

@@ -12,7 +12,9 @@
         </div>
         <div class="tool-btn">
           <span>用户名：{{ userInfo.userName }}； </span>
-          <span>用户等级：{{ userInfo.userRank ? "管理员" : "用户" }}</span>
+          <span
+            >用户等级：{{ userInfo.userRank === "1" ? "管理员" : "用户" }}</span
+          >
           <el-button
             type="primary"
             size="small"
@@ -48,7 +50,7 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { SwitchButton } from "@element-plus/icons-vue";
 import { UserLocal } from "../../store/loginStore";
-import type { IUserInfo } from "../../store/loginStore";
+import type { IUserInfo } from "../../api/loginApi";
 import LeftMenu from "./LeftMenu/index.vue";
 import useResize from "./useResize";
 
@@ -77,9 +79,7 @@ provide("userInfo", userInfo);
  */
 const handleLoginOut = async () => {
   const isSucceed: boolean = await store.dispatch("loginStore/loginOut");
-  if (isSucceed) {
-    router.push({ name: "login" });
-  }
+  isSucceed && router.push({ name: "login" });
 };
 
 /**

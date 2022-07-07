@@ -15,14 +15,14 @@ const service = axios.create({
 // 响应拦截器
 service.interceptors.response.use(({ data: result }: any) => {
   const { status, msg, data } = result;
-  if (status !== "0") {
+  const flag: boolean = status === "0";
+  if (!flag) {
     ElNotification.error({
       title: "出错了！",
       message: msg,
     });
-    return { flag: false, response: msg };
   }
-  return { flag: true, response: data };
+  return { flag, response: flag ? data : msg };
 });
 
 export default service;

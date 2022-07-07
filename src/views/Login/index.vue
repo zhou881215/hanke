@@ -86,9 +86,7 @@ const submitForm = async () => {
     "loginStore/loginIn",
     loginForm
   );
-  if (isSucceed) {
-    router.push({ name: "mainLayout" });
-  }
+  isSucceed && router.push({ name: "mainLayout" });
 };
 </script>
 

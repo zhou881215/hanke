@@ -10,6 +10,12 @@ export interface ILoginData {
   loginPwd: string;
 }
 
+// 登录接口-响应数据
+export interface IUserInfo {
+  userName: string;
+  userRank: string;
+}
+
 // 注册
 export interface IRegisterInfo {
   loginId: string;

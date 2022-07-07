@@ -12,10 +12,10 @@
     <div class="dialog-main">
       <el-row class="dialog-count">
         <el-col class="dialog-count-item" :span="12">
-          数据总数：<span>400</span>
+          数据总数：<span>{{ currentToday.totalcount }}</span>
         </el-col>
         <el-col class="dialog-count-item" :span="12">
-          今日新增：<span>100</span>
+          今日新增：<span>{{ currentToday.todaycount }}</span>
         </el-col>
       </el-row>
       <el-form
@@ -39,10 +39,10 @@
                 v-model="productDetail[item.prop]"
               >
                 <el-option
-                  v-for="item in typeOptions"
-                  :key="item.value"
-                  :label="item.value"
-                  :value="item.value"
+                  v-for="item in categoryOptions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
                 />
               </el-select>
               <el-input
@@ -75,12 +75,21 @@ import { watch, computed, inject, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
-import type { IProduct } from "../../../api/productApi";
+import type {
+  ICategoryOptions,
+  IProduct,
+  ICurrentToday,
+} from "../../../api/productApi";
 import { cloneDeep } from "../../../utils";
 import { defaultDetail } from "../../../store/productStore";
-import { typeOptions } from "../constant";
 
 const store = useStore();
+const categoryOptions: ComputedRef<Array<ICategoryOptions>> = computed(
+  () => store.state.productStore.categoryOptions
+);
+const currentToday: ComputedRef<ICurrentToday> = computed(
+  () => store.state.productStore.currentToday
+);
 const productDetail: ComputedRef<IProduct> = computed(
   () => store.state.productStore.productDetail
 );
@@ -111,6 +120,21 @@ const emit = defineEmits<{
   ): void;
 }>();
 
+/**
+ * 监听开关，开的时候查询总数
+ */
+watch(
+  () => props.dialogVisible,
+  async (newV: boolean) => {
+    if (newV) {
+      await store.dispatch("productStore/fetchCurrentTotal");
+    }
+  }
+);
+
+/**
+ * 监听id，判断是否是修改
+ */
 watch(
   () => props.activeId,
   async (newV: string) => {
@@ -131,8 +155,11 @@ const handleClose = () => {
  * 确认
  */
 const handleConfirm = async () => {
-  await store.dispatch("productStore/saveSingleProduct");
-  clearStoreDetail(true);
+  const isSucceed: boolean = await store.dispatch(
+    "productStore/saveSingleProduct",
+    productDetail.value
+  );
+  isSucceed && clearStoreDetail(true);
 };
 
 /**

@@ -9,18 +9,18 @@ import {
   userRegisterApi,
   recoverPassApi,
 } from "../api/loginApi";
-import type { ILoginData, IRegisterInfo, IRecoverInfo } from "../api/loginApi";
+import type {
+  ILoginData,
+  IUserInfo,
+  IRegisterInfo,
+  IRecoverInfo,
+} from "../api/loginApi";
 
 export const UserLocal: string = "userLocal";
 
 export interface ILoginUser {
   userInfo: IUserInfo;
   userLoading: boolean;
-}
-
-export interface IUserInfo {
-  userName: string;
-  userRank: boolean;
 }
 
 const state: ILoginUser = {
@@ -72,12 +72,9 @@ export default {
     async getAuthCode({ commit }: any, phone: string) {
       commit("setLoading", true);
       const { flag, response } = (await getAuthCodeApi(phone)) as any;
-      let count = 60;
-      if (!flag) {
-        count = parseInt(response.substring(2));
-      }
+      const remainTime = flag ? 60 : parseInt(response.substring(2));
       commit("setLoading", false);
-      return count;
+      return remainTime;
     },
     /**
      * 注册

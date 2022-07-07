@@ -4,6 +4,22 @@
  */
 import { axios } from "../utils";
 
+export interface ISearchParam {
+  jcbz: string;
+  jcxm: string;
+  lb: string;
+  cpmc: string;
+  pageSize: number;
+  p: number;
+}
+
+// 产品类别接口-响应数据
+export interface ICategoryOptions {
+  id: string;
+  name: string;
+}
+
+// 产品接口-响应数据
 export interface IProduct {
   id?: string;
   xh: string;
@@ -32,17 +48,45 @@ export interface IProduct {
   [key: string]: any;
 }
 
-export interface ISearchParam {
-  jcbz: string;
-  jcxm: string;
-  lb: string;
-  cpmc: string;
-  pageSize: number;
-  pageNo: number;
+export interface IProductData {
+  list: Array<IProduct>;
+  count: string;
 }
 
+// 产品接口-响应数据
+export interface ICurrentToday {
+  todaycount: string;
+  totalcount: string;
+}
 /**
- * 登录
+ * 查询产品类别
+ */
+export const fetchProductCategoryApi = async () =>
+  await axios.post("http://test.zanbox.net/Api/Product/fetchProductCategory");
+
+/**
+ * 查询产品列表
  */
 export const fetchProductApi = async (params: ISearchParam) =>
   await axios.post("http://test.zanbox.net/Api/Product/fetchProduct", params);
+
+/**
+ * 查询当日新增
+ */
+export const fetchCurrentTotalApi = async () =>
+  await axios.post("http://test.zanbox.net/Api/Product/fetchCurrentTotal");
+
+/**
+ * 查询单条产品详情
+ */
+export const fetchDetailApi = async (id: string) =>
+  await axios.post("http://test.zanbox.net/Api/Product/fetchDetail", { id });
+
+/**
+ * 新增\更新单条产品
+ */
+export const saveSingleProductApi = async (params: IProduct) =>
+  await axios.post(
+    "http://test.zanbox.net/Api/Product/saveSingleProduct",
+    params
+  );
