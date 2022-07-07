@@ -29,7 +29,7 @@ interface IProductStore {
 
 export const defaultDetail: IProduct = {
   id: "",
-  xh: "",
+  xh: 0,
   lb: "",
   cpmc: "",
   jcxm: "",

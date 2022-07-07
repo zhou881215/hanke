@@ -159,7 +159,7 @@ const handleConfirm = async () => {
     "productStore/saveSingleProduct",
     {
       ...productDetail.value,
-      xh: props.activeId ? +productDetail.value.xh : 0,
+      xh: +productDetail.value.xh,
     }
   );
   isSucceed && clearStoreDetail(true);

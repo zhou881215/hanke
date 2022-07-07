@@ -22,7 +22,7 @@ export interface ICategoryOptions {
 // 产品接口-响应数据
 export interface IProduct {
   id?: string;
-  xh: string;
+  xh: string | number;
   lb: string;
   cpmc: string;
   jcxm: string;
