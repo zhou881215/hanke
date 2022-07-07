@@ -157,7 +157,10 @@ const handleClose = () => {
 const handleConfirm = async () => {
   const isSucceed: boolean = await store.dispatch(
     "productStore/saveSingleProduct",
-    productDetail.value
+    {
+      ...productDetail.value,
+      xh: props.activeId ? +productDetail.value.xh : 0,
+    }
   );
   isSucceed && clearStoreDetail(true);
 };

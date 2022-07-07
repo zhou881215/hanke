@@ -116,9 +116,11 @@ export default {
     /**
      * 查询产品详情
      */
-    async fetchDetail({ commit }: any, id: string) {
-      const { flag, response } = (await fetchDetailApi(id)) as any;
+    async fetchDetail({ commit }: any, xh: string) {
+      commit("setSingleLoading", true);
+      const { flag, response } = (await fetchDetailApi(xh)) as any;
       flag && commit("setDetail", response);
+      commit("setSingleLoading", false);
     },
     /**
      * 新增\更新单条产品

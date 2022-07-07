@@ -79,9 +79,9 @@ export const fetchCurrentTotalApi = async () =>
 /**
  * 查询单条产品详情
  */
-export const fetchDetailApi = async (id: string) =>
+export const fetchDetailApi = async (xh: string) =>
   await axios.post("http://test.zanbox.net/Api/Product/fetchDetail", {
-    xh: +id,
+    xh: +xh,
   });
 
 /**

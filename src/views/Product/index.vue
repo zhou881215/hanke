@@ -180,7 +180,7 @@ const handleOpenForm = (
   fetchFlag?: boolean, // 是否重新查询
   row?: IProduct
 ) => {
-  activeId.value = row ? (row.id as string) : "";
+  activeId.value = row ? (row.xh as string) : "";
   dialogVisible.value = openFlag;
   fetchFlag && handleSearch();
 };
