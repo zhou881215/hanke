@@ -84,6 +84,7 @@
       <template #empty>
         <el-empty description="哎呀，暂时没有数据！" />
       </template>
+      <el-table-column prop="xh" label="序号" />
       <el-table-column
         v-for="item in showColumn"
         :prop="item.prop"
