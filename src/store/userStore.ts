@@ -2,19 +2,27 @@
  * @Author: Cram
  * @Date: 2022-06-19 16:47:11
  */
-import { delay } from "../api/loginApi";
-import type { IUser, IUserDetail } from "../api/userApi";
+import {
+  fetchUserApi,
+  deleteUserApi,
+  fetchSingleUserApi,
+  updateSingleUserApi,
+  downloadLogApi,
+} from "../api/userApi";
+import type { IFetchUser, IUser, IUserDetail } from "../api/userApi";
 
 interface IUserStore {
   userLoading: boolean;
   userData: Array<IUser>;
   userDetail: IUserDetail;
+  userDetailLoading: boolean;
 }
 
 const state: IUserStore = {
   userLoading: false,
   userData: [],
   userDetail: {} as IUserDetail,
+  userDetailLoading: false,
 };
 
 export default {
@@ -30,49 +38,50 @@ export default {
     setUserDetail(state: IUserStore, payload: IUserDetail) {
       state.userDetail = payload;
     },
+    setUserDetailLoading(state: IUserStore, payload: boolean) {
+      state.userDetailLoading = payload;
+    },
   },
   actions: {
-    async fetchUser({ commit }: any, param: any) {
+    /**
+     * 查询用户列表
+     */
+    async fetchUser({ commit }: any, payload: IFetchUser) {
       commit("setLoading", true);
-      await delay(1000);
-      const { pageSize } = param;
-      const result = Array(pageSize)
-        .fill("")
-        .map(() => ({
-          id: Math.random().toString(32).substring(2),
-          userName: Math.random().toString(32).substring(2),
-          userPass: Math.random().toString(32).substring(2),
-          phoneNumber: Math.random().toString(8).substring(2, 13),
-          regdate: new Date(Math.random() * 10 ** 12).toLocaleDateString(),
-          isAudit: Math.random() > 0.1,
-        }));
-      commit("setUser", result);
+      const { flag, response } = (await fetchUserApi(payload)) as any;
+      flag && commit("setUser", response);
       commit("setLoading", false);
     },
-    async deleteUser() {
-      await delay(1000);
+    /**
+     * 删除用户
+     */
+    async deleteUser({ commit }: any, payload: string) {
+      const { flag } = (await deleteUserApi(payload)) as any;
+      return flag;
     },
-    async fetchSingleUser({ commit }: any, param: any) {
-      await delay(300);
-      const userDetail: IUserDetail = {
-        id: Math.random().toString(32).substring(2, 8),
-        userName: Math.random().toString(32).substring(2),
-        userPass: Math.random().toString(32).substring(2),
-        phoneNumber: Math.random().toString(8).substring(2, 13),
-        regdate: new Date(Math.random() * 10 ** 12).toLocaleDateString(),
-        isAudit: Math.random() > 0.1,
-        userTrack: Array(parseInt(Math.random() * 10 + ""))
-          .fill("")
-          .map(() => ({
-            loginTime: new Date(Math.random() * 10 ** 12).toLocaleDateString(),
-            visitLog: ["/product"],
-            searchLog: Array(parseInt(Math.random() * 100 + ""))
-              .fill("")
-              .map(() => "产品" + Math.random().toString(32).substring(2)),
-          })),
-      };
-      commit("setUserDetail", userDetail);
+    /**
+     * 查询用户详情
+     */
+    async fetchSingleUser({ commit }: any, payload: string) {
+      commit("setUserDetailLoading", true);
+      const { flag, response } = (await fetchSingleUserApi(payload)) as any;
+      flag && commit("setUserDetail", response);
+      commit("setUserDetailLoading", false);
     },
-    async updateSingleUser() {},
+    /**
+     * 更新用户
+     */
+    async updateSingleUser({ commit }: any, payload: IUserDetail) {
+      commit("setUserDetailLoading", true);
+      const { flag } = (await updateSingleUserApi(payload)) as any;
+      commit("setUserDetailLoading", false);
+      return flag;
+    },
+    /**
+     * 下载日志
+     */
+    async downloadLog({ commit }: any, payload: string) {
+      await downloadLogApi(payload);
+    },
   },
 };

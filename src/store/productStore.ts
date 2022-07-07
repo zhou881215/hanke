@@ -116,9 +116,9 @@ export default {
     /**
      * 查询产品详情
      */
-    async fetchDetail({ commit }: any, xh: string) {
+    async fetchDetail({ commit }: any, payload: string) {
       commit("setSingleLoading", true);
-      const { flag, response } = (await fetchDetailApi(xh)) as any;
+      const { flag, response } = (await fetchDetailApi(payload)) as any;
       flag && commit("setDetail", response);
       commit("setSingleLoading", false);
     },

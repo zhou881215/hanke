@@ -33,14 +33,6 @@ export interface IRecoverInfo {
   loginAuth: string;
 }
 
-export function delay(duration: number) {
-  return new Promise((resolve: any) => {
-    setTimeout(() => {
-      resolve();
-    }, duration);
-  });
-}
-
 /**
  * 登录
  */

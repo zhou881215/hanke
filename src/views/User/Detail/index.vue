@@ -58,7 +58,10 @@
                 <el-icon><TurnOff /></el-icon> 是否审核
               </div>
             </template>
-            <el-switch v-model="userDetail.isAudit" />
+            <el-switch
+              :disable="userDetailLoading"
+              v-model="userDetail.isAudit"
+            />
           </el-descriptions-item>
         </el-descriptions>
       </div>
@@ -69,6 +72,7 @@
             :title="'登录时间：' + item.loginTime"
             :name="index"
             :key="index"
+            :disable="userDetailLoading"
           >
             <div class="collapse-chunk">
               <div class="collapse-chunk-title">浏览记录</div>
@@ -99,13 +103,21 @@
           </el-collapse-item>
         </el-collapse>
       </div>
-      <el-button type="primary" :icon="Download" @click="handleDownLoad"
-        >下载日志</el-button
-      >
+      <el-button type="primary" :icon="Download" @click="handleDownLoad">
+        下载日志
+      </el-button>
     </div>
     <template #footer>
-      <el-button @click="() => confirmClose()"> 关闭 </el-button>
-      <el-button type="primary" @click="handleConfirm"> 修改 </el-button>
+      <el-button :loading="userDetailLoading" @click="() => confirmClose()">
+        关闭
+      </el-button>
+      <el-button
+        :loading="userDetailLoading"
+        type="primary"
+        @click="handleConfirm"
+      >
+        修改
+      </el-button>
     </template>
   </el-dialog>
 </template>
@@ -127,6 +139,9 @@ import type { IUser, IUserDetail } from "../../../api/userApi";
 const randomType = ["", "success", "info", "danger", "warning"];
 
 const store = useStore();
+const userDetailLoading: ComputedRef<boolean> = computed(
+  () => store.state.userStore.userDetailLoading
+);
 const userDetail: ComputedRef<IUserDetail> = computed(
   () => store.state.userStore.userDetail
 );
@@ -155,24 +170,22 @@ const emit = defineEmits<{
 
 watch(
   () => props.openUserId,
-  async (newV: string) => {
-    if (newV) {
-      await store.dispatch("userStore/fetchSingleUser", newV);
-    }
-  }
+  async (newV: string) =>
+    !!newV && (await store.dispatch("userStore/fetchSingleUser", newV))
 );
 
 /**
  * 下载日志
  */
-const handleDownLoad = () => {};
+const handleDownLoad = async () =>
+  await store.dispatch("userStore/downloadLog", userDetail.value.id);
 
 /**
  * 确认
  */
 const handleConfirm = async () => {
-  await store.dispatch("userStore/updateSingleUser");
-  confirmClose(true);
+  const isSucceed: boolean = await store.dispatch("userStore/updateSingleUser");
+  isSucceed && confirmClose(true);
 };
 
 /**

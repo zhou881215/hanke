@@ -4,18 +4,14 @@
  */
 import { ref } from "vue";
 import { useStore } from "vuex";
-
-interface IFetchUser {
-  pageSize: number;
-  pageNo: number;
-}
+import type { IFetchUser } from "../../api/userApi";
 
 export default function () {
   const store = useStore();
 
   const fetchParam = ref<IFetchUser>({
     pageSize: 10,
-    pageNo: 1,
+    p: 1,
   });
 
   const handleFetch = async () => {
@@ -23,8 +19,8 @@ export default function () {
   };
 
   const handleDelete = async () => {
-    await store.dispatch("userStore/deleteUser");
-    await handleFetch();
+    const isSucceed: boolean = await store.dispatch("userStore/deleteUser");
+    isSucceed && (await handleFetch());
   };
 
   return { fetchParam, handleFetch, handleDelete };

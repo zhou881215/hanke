@@ -43,9 +43,9 @@ export default {
     /**
      * 登录
      */
-    async loginIn({ commit }: any, params: ILoginData) {
+    async loginIn({ commit }: any, payload: ILoginData) {
       commit("setLoading", true);
-      const { flag, response } = (await loginInApi(params)) as any;
+      const { flag, response } = (await loginInApi(payload)) as any;
       if (flag) {
         commit("setUser", response);
         localStorage.setItem(UserLocal, JSON.stringify(response));
@@ -69,9 +69,9 @@ export default {
     /**
      * 获取验证码
      */
-    async getAuthCode({ commit }: any, phone: string) {
+    async getAuthCode({ commit }: any, payload: string) {
       commit("setLoading", true);
-      const { flag, response } = (await getAuthCodeApi(phone)) as any;
+      const { flag, response } = (await getAuthCodeApi(payload)) as any;
       const remainTime = flag ? 60 : parseInt(response.substring(2));
       commit("setLoading", false);
       return remainTime;

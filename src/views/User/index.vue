@@ -61,7 +61,7 @@
     </el-table>
     <div class="pagination-wrapper">
       <el-pagination
-        v-model:currentPage="fetchParam.pageNo"
+        v-model:currentPage="fetchParam.p"
         v-model:page-size="fetchParam.pageSize"
         :background="true"
         :page-sizes="[10, 20, 40, 80]"

@@ -125,11 +125,8 @@ const emit = defineEmits<{
  */
 watch(
   () => props.dialogVisible,
-  async (newV: boolean) => {
-    if (newV) {
-      await store.dispatch("productStore/fetchCurrentTotal");
-    }
-  }
+  async (newV: boolean) =>
+    newV && (await store.dispatch("productStore/fetchCurrentTotal"))
 );
 
 /**
@@ -137,11 +134,8 @@ watch(
  */
 watch(
   () => props.activeId,
-  async (newV: string) => {
-    if (newV) {
-      await store.dispatch("productStore/fetchDetail", newV);
-    }
-  }
+  async (newV: string) =>
+    !!newV && (await store.dispatch("productStore/fetchDetail", newV))
 );
 
 /**

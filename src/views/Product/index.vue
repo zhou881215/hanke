@@ -5,7 +5,7 @@
 <template>
   <el-form :inline="true" :model="searchParam" class="search-area">
     <el-form-item label="产品类别">
-      <el-select :disabled="productLoading" v-model="searchParam.lb">
+      <el-select :disabled="productLoading" v-model="searchParam.lb" clearable>
         <el-option
           v-for="item in categoryOptions"
           :key="item.id"
@@ -84,7 +84,7 @@
       <template #empty>
         <el-empty description="哎呀，暂时没有数据！" />
       </template>
-      <el-table-column prop="xh" label="序号" />
+      <el-table-column prop="xh" label="序号" width="100" />
       <el-table-column
         v-for="item in showColumn"
         :prop="item.prop"
