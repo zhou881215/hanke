@@ -5,7 +5,7 @@
 <template>
   <footer class="web-footer">
     Copyright © 2022 瀚科检测 All rights reserved.
-    <a href="#">苏ICP备20036233号-4</a>
+    <a href="https://beian.miit.gov.cn/">苏ICP备20036233号-4</a>
   </footer>
 </template>
 
