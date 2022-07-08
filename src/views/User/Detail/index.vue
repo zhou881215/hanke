@@ -11,14 +11,14 @@
   >
     <div class="detail-main">
       <div class="detail-descriptions">
-        <el-descriptions border :column="isPhone ? 1 : 3">
+        <el-descriptions border :column="isPhone ? 1 : 2">
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
                 <el-icon><Monitor /></el-icon> 用户ID
               </div>
             </template>
-            {{ userDetail.id }}
+            {{ userDetailInfo.id }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -26,23 +26,23 @@
                 <el-icon><User /></el-icon> 用户名
               </div>
             </template>
-            {{ userDetail.userName }}
+            {{ userDetailInfo.username }}
           </el-descriptions-item>
-          <el-descriptions-item>
+          <!-- <el-descriptions-item>
             <template #label>
               <div class="cell-item">
                 <el-icon><Lock /></el-icon> 密码
               </div>
             </template>
-            {{ userDetail.userPass }}
-          </el-descriptions-item>
+            {{ userDetailInfo.userpass }}
+          </el-descriptions-item> -->
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
                 <el-icon><Lock /></el-icon> 手机号码
               </div>
             </template>
-            {{ userDetail.phoneNumber }}
+            {{ userDetailInfo.phone }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -50,7 +50,7 @@
                 <el-icon><Clock /></el-icon> 注册时间
               </div>
             </template>
-            {{ userDetail.regdate }}
+            {{ userDetailInfo.regdate }}
           </el-descriptions-item>
           <el-descriptions-item>
             <template #label>
@@ -60,7 +60,7 @@
             </template>
             <el-switch
               :disable="userDetailLoading"
-              v-model="userDetail.isAudit"
+              v-model="userDetailInfo.status"
             />
           </el-descriptions-item>
         </el-descriptions>
@@ -68,7 +68,7 @@
       <div class="detail-collapse">
         <el-collapse accordion>
           <el-collapse-item
-            v-for="(item, index) in userDetail.userTrack"
+            v-for="(item, index) in userDetailLogo"
             :title="'登录时间：' + item.loginTime"
             :name="index"
             :key="index"
@@ -134,7 +134,12 @@ import {
   TurnOff,
   Download,
 } from "@element-plus/icons-vue";
-import type { IUser, IUserDetail } from "../../../api/userApi";
+import type {
+  IUser,
+  IUpdateUser,
+  IUserDetailInfo,
+  IUserLog,
+} from "../../../api/userApi";
 
 const randomType = ["", "success", "info", "danger", "warning"];
 
@@ -142,8 +147,11 @@ const store = useStore();
 const userDetailLoading: ComputedRef<boolean> = computed(
   () => store.state.userStore.userDetailLoading
 );
-const userDetail: ComputedRef<IUserDetail> = computed(
-  () => store.state.userStore.userDetail
+const userDetailInfo: ComputedRef<IUserDetailInfo> = computed(
+  () => store.state.userStore.userDetail.userinfo
+);
+const userDetailLogo: ComputedRef<Array<IUserLog>> = computed(
+  () => store.state.userStore.userDetail.logdata
 );
 
 /**
@@ -178,13 +186,18 @@ watch(
  * 下载日志
  */
 const handleDownLoad = async () =>
-  await store.dispatch("userStore/downloadLog", userDetail.value.id);
+  await store.dispatch("userStore/downloadLog", userDetailInfo.value.id);
 
 /**
  * 确认
  */
 const handleConfirm = async () => {
-  const isSucceed: boolean = await store.dispatch("userStore/updateSingleUser");
+  const { id, status } = userDetailInfo.value;
+  const updateInfo: IUpdateUser = { id: +id, status: status ? "1" : "0" };
+  const isSucceed: boolean = await store.dispatch(
+    "userStore/updateSingleUser",
+    updateInfo
+  );
   isSucceed && confirmClose(true);
 };
 

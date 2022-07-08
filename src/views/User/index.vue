@@ -16,7 +16,7 @@
     <el-table
       v-loading="userLoading"
       element-loading-text="Loading..."
-      :data="userData"
+      :data="userData.list"
       border
       stripe
       style="width: 100%"
@@ -27,17 +27,19 @@
         <el-empty description="哎呀，暂时没有数据！" />
       </template>
       <el-table-column prop="id" label="用户ID" />
-      <el-table-column prop="userName" label="用户名" />
-      <el-table-column prop="userPass" label="密码">
-        <template #default="{ row: { userPass } }">
-          {{ viewPass ? userPass : Array(userPass.length).fill("*").join("") }}
+      <el-table-column prop="username" label="用户名" />
+      <el-table-column prop="userpass" label="密码">
+        <template #default="{ row: { userpass } }">
+          {{ viewPass ? userpass : Array(userpass.length).fill("*").join("") }}
         </template>
       </el-table-column>
-      <el-table-column prop="phoneNumber" label="手机号码" />
+      <el-table-column prop="phonenumber" label="手机号码" />
       <el-table-column prop="regdate" label="注册时间" />
-      <el-table-column prop="isAudit" label="是否审核">
-        <template #default="{ row: { isAudit } }">
-          <el-button v-if="isAudit" type="success" size="small">是</el-button>
+      <el-table-column prop="status" label="是否审核">
+        <template #default="{ row: { status } }">
+          <el-button v-if="status === '1'" type="success" size="small"
+            >是</el-button
+          >
           <el-button v-else type="danger" size="small">否</el-button>
         </template>
       </el-table-column>
@@ -50,7 +52,10 @@
             @click="handleOpenDetail(true, false, row)"
           />
           <el-tooltip content="删除" effect="light" placement="bottom">
-            <el-popconfirm title="确定要删除吗?" @confirm="handleDelete">
+            <el-popconfirm
+              title="确定要删除吗?"
+              @confirm="handleDelete(row.id)"
+            >
               <template #reference>
                 <el-button :icon="Delete" size="small" type="primary" />
               </template>
@@ -66,7 +71,7 @@
         :background="true"
         :page-sizes="[10, 20, 40, 80]"
         :layout="paginationLayout"
-        :total="24"
+        :total="+userData.count"
         @size-change="handleFetch"
         @current-change="handleFetch"
       />
@@ -86,14 +91,14 @@ import { useStore } from "vuex";
 import { View, Hide, Edit, Delete } from "@element-plus/icons-vue";
 import useFetch from "./useFetch";
 import useViewPass from "./useViewPass";
-import type { IUser } from "../../api/userApi";
+import type { IUser, IUserData } from "../../api/userApi";
 import Detail from "./Detail/index.vue";
 
 const store = useStore();
 const userLoading: ComputedRef<boolean> = computed(
   () => store.state.userStore.userLoading
 );
-const userData: ComputedRef<Array<IUser>> = computed(
+const userData: ComputedRef<IUserData> = computed(
   () => store.state.userStore.userData
 );
 

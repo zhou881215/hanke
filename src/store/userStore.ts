@@ -9,19 +9,31 @@ import {
   updateSingleUserApi,
   downloadLogApi,
 } from "../api/userApi";
-import type { IFetchUser, IUser, IUserDetail } from "../api/userApi";
+import type {
+  IFetchUser,
+  IUpdateUser,
+  IUserData,
+  IUserDetail,
+  IUserDetailInfo,
+} from "../api/userApi";
 
 interface IUserStore {
   userLoading: boolean;
-  userData: Array<IUser>;
+  userData: IUserData;
   userDetail: IUserDetail;
   userDetailLoading: boolean;
 }
 
 const state: IUserStore = {
   userLoading: false,
-  userData: [],
-  userDetail: {} as IUserDetail,
+  userData: {
+    list: [],
+    count: "0",
+  },
+  userDetail: {
+    userinfo: {} as IUserDetailInfo,
+    logdata: [],
+  } as IUserDetail,
   userDetailLoading: false,
 };
 
@@ -32,7 +44,7 @@ export default {
     setLoading(state: IUserStore, payload: boolean) {
       state.userLoading = payload;
     },
-    setUser(state: IUserStore, payload: Array<IUser>) {
+    setUser(state: IUserStore, payload: IUserData) {
       state.userData = payload;
     },
     setUserDetail(state: IUserStore, payload: IUserDetail) {
@@ -65,13 +77,20 @@ export default {
     async fetchSingleUser({ commit }: any, payload: string) {
       commit("setUserDetailLoading", true);
       const { flag, response } = (await fetchSingleUserApi(payload)) as any;
-      flag && commit("setUserDetail", response);
+      if (flag) {
+        const { userinfo, logdata } = response;
+        const result: IUserDetail = {
+          userinfo: { ...userinfo, status: userinfo.status === "1" },
+          logdata,
+        };
+        commit("setUserDetail", result);
+      }
       commit("setUserDetailLoading", false);
     },
     /**
      * 更新用户
      */
-    async updateSingleUser({ commit }: any, payload: IUserDetail) {
+    async updateSingleUser({ commit }: any, payload: IUpdateUser) {
       commit("setUserDetailLoading", true);
       const { flag } = (await updateSingleUserApi(payload)) as any;
       commit("setUserDetailLoading", false);
@@ -81,7 +100,12 @@ export default {
      * 下载日志
      */
     async downloadLog({ commit }: any, payload: string) {
-      await downloadLogApi(payload);
+      const { flag, response } = (await downloadLogApi(payload)) as any;
+      if (flag) {
+        const a = document.createElement("a");
+        a.setAttribute("href", response);
+        a.click();
+      }
     },
   },
 };

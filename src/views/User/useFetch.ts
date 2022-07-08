@@ -18,8 +18,8 @@ export default function () {
     await store.dispatch("userStore/fetchUser", fetchParam.value);
   };
 
-  const handleDelete = async () => {
-    const isSucceed: boolean = await store.dispatch("userStore/deleteUser");
+  const handleDelete = async (id: string) => {
+    const isSucceed: boolean = await store.dispatch("userStore/deleteUser", id);
     isSucceed && (await handleFetch());
   };
 

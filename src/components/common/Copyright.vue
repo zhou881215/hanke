@@ -5,17 +5,24 @@
 <template>
   <footer class="web-footer">
     Copyright © 2022 瀚科检测 All rights reserved.
+    <a href="#">苏ICP备20036233号-4</a>
   </footer>
 </template>
 
 <style scoped lang="less">
 .web-footer {
   position: absolute;
-  bottom: 0;
+  bottom: 1em;
   left: 50%;
-  width: 370px;
+  width: 100%;
   text-align: center;
-  line-height: 5em;
+  line-height: 1.8em;
   transform: translateX(-50%);
+}
+@media (max-width: 768px) {
+  .web-footer {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>
