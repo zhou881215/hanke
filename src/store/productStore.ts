@@ -16,6 +16,7 @@ import type {
   IProductData,
   ICurrentToday,
 } from "../api/productApi";
+import type { ISsid } from "../api/loginApi";
 import { cloneDeep } from "../utils";
 
 interface IProductStore {
@@ -93,8 +94,10 @@ export default {
     /**
      * 查询产品分类
      */
-    async fetchProductCategory({ commit }: any) {
-      const { flag, response } = (await fetchProductCategoryApi()) as any;
+    async fetchProductCategory({ commit }: any, payload: ISsid) {
+      const { flag, response } = (await fetchProductCategoryApi(
+        payload
+      )) as any;
       flag && commit("setCategory", response);
     },
     /**
@@ -109,14 +112,14 @@ export default {
     /**
      * 查询当日总数
      */
-    async fetchCurrentTotal({ commit }: any) {
-      const { flag, response } = (await fetchCurrentTotalApi()) as any;
+    async fetchCurrentTotal({ commit }: any, payload: ISsid) {
+      const { flag, response } = (await fetchCurrentTotalApi(payload)) as any;
       flag && commit("setCurrentToday", response);
     },
     /**
      * 查询产品详情
      */
-    async fetchDetail({ commit }: any, payload: string) {
+    async fetchDetail({ commit }: any, payload: { xh: number; ssid: string }) {
       commit("setSingleLoading", true);
       const { flag, response } = (await fetchDetailApi(payload)) as any;
       flag && commit("setDetail", response);

@@ -91,6 +91,7 @@ import { useStore } from "vuex";
 import { View, Hide, Edit, Delete } from "@element-plus/icons-vue";
 import useFetch from "./useFetch";
 import useViewPass from "./useViewPass";
+import type { IUserInfo } from "../../api/loginApi";
 import type { IUser, IUserData } from "../../api/userApi";
 import Detail from "./Detail/index.vue";
 
@@ -103,6 +104,10 @@ const userData: ComputedRef<IUserData> = computed(
 );
 
 /**
+ * 权限
+ */
+const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
+/**
  * 响应式
  */
 const paginationLayout: Ref<string> = inject(
@@ -113,7 +118,7 @@ const paginationLayout: Ref<string> = inject(
 /**
  * 列表相关
  */
-const { fetchParam, handleFetch, handleDelete } = useFetch();
+const { fetchParam, handleFetch, handleDelete } = useFetch(userInfo);
 
 /**
  * 查看密码

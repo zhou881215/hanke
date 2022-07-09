@@ -78,7 +78,9 @@ provide("userInfo", userInfo);
  * 退出
  */
 const handleLoginOut = async () => {
-  const isSucceed: boolean = await store.dispatch("loginStore/loginOut");
+  const isSucceed: boolean = await store.dispatch("loginStore/loginOut", {
+    ssid: userInfo.ssid,
+  });
   isSucceed && router.push({ name: "login" });
 };
 

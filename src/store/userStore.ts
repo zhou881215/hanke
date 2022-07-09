@@ -11,6 +11,7 @@ import {
 } from "../api/userApi";
 import type {
   IFetchUser,
+  IUserSsid,
   IUpdateUser,
   IUserData,
   IUserDetail,
@@ -67,14 +68,14 @@ export default {
     /**
      * 删除用户
      */
-    async deleteUser({ commit }: any, payload: string) {
+    async deleteUser({ commit }: any, payload: IUserSsid) {
       const { flag } = (await deleteUserApi(payload)) as any;
       return flag;
     },
     /**
      * 查询用户详情
      */
-    async fetchSingleUser({ commit }: any, payload: string) {
+    async fetchSingleUser({ commit }: any, payload: IUserSsid) {
       commit("setUserDetailLoading", true);
       const { flag, response } = (await fetchSingleUserApi(payload)) as any;
       if (flag) {
@@ -99,7 +100,7 @@ export default {
     /**
      * 下载日志
      */
-    async downloadLog({ commit }: any, payload: string) {
+    async downloadLog({ commit }: any, payload: IUserSsid) {
       const { flag, response } = (await downloadLogApi(payload)) as any;
       if (flag) {
         const a = document.createElement("a");

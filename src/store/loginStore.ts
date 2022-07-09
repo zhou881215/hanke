@@ -12,6 +12,7 @@ import {
 import type {
   ILoginData,
   IUserInfo,
+  ISsid,
   IRegisterInfo,
   IRecoverInfo,
 } from "../api/loginApi";
@@ -56,9 +57,9 @@ export default {
     /**
      * 注销
      */
-    async loginOut({ commit }: any) {
+    async loginOut({ commit }: any, payload: ISsid) {
       commit("setLoading", true);
-      const { flag } = (await loginOutApi()) as any;
+      const { flag } = (await loginOutApi(payload)) as any;
       if (flag) {
         commit("setUser", null);
         localStorage.removeItem(UserLocal);

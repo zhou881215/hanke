@@ -5,9 +5,10 @@
 import { ref } from "vue";
 import { useStore } from "vuex";
 import type { ISearchParam } from "../../api/productApi";
+import type { IUserInfo } from "../../api/loginApi";
 import { cloneDeep } from "../../utils";
 
-export default function () {
+export default function (userInfo: IUserInfo) {
   const store = useStore();
 
   const defaultSearch = {
@@ -25,7 +26,10 @@ export default function () {
     if (flag) {
       searchParam.value = cloneDeep(defaultSearch);
     }
-    await store.dispatch("productStore/fetchProduct", searchParam.value);
+    await store.dispatch("productStore/fetchProduct", {
+      ...searchParam.value,
+      ssid: userInfo.ssid,
+    });
   };
 
   return { searchParam, handleSearch };

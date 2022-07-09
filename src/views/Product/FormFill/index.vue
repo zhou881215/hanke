@@ -75,6 +75,7 @@ import { watch, computed, inject, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
+import type { IUserInfo } from "../../../api/loginApi";
 import type {
   ICategoryOptions,
   IProduct,
@@ -97,6 +98,10 @@ const saveSingleLoading: ComputedRef<boolean> = computed(
   () => store.state.productStore.saveSingleLoading
 );
 
+/**
+ * 权限
+ */
+const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
 /**
  * 响应式
  */
@@ -126,7 +131,10 @@ const emit = defineEmits<{
 watch(
   () => props.dialogVisible,
   async (newV: boolean) =>
-    newV && (await store.dispatch("productStore/fetchCurrentTotal"))
+    newV &&
+    (await store.dispatch("productStore/fetchCurrentTotal", {
+      ssid: userInfo.ssid,
+    }))
 );
 
 /**
@@ -135,7 +143,11 @@ watch(
 watch(
   () => props.activeId,
   async (newV: string) =>
-    !!newV && (await store.dispatch("productStore/fetchDetail", newV))
+    !!newV &&
+    (await store.dispatch("productStore/fetchDetail", {
+      xh: +newV,
+      ssid: userInfo.ssid,
+    }))
 );
 
 /**
@@ -154,6 +166,7 @@ const handleConfirm = async () => {
     {
       ...productDetail.value,
       xh: +productDetail.value.xh,
+      ssid: userInfo.ssid,
     }
   );
   isSucceed && clearStoreDetail(true);

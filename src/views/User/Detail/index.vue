@@ -134,6 +134,7 @@ import {
   TurnOff,
   Download,
 } from "@element-plus/icons-vue";
+import type { IUserInfo } from "../../../api/loginApi";
 import type {
   IUser,
   IUpdateUser,
@@ -154,6 +155,10 @@ const userDetailLogo: ComputedRef<Array<IUserLog>> = computed(
   () => store.state.userStore.userDetail.logdata
 );
 
+/**
+ * 权限
+ */
+const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
 /**
  * 响应式
  */
@@ -178,22 +183,33 @@ const emit = defineEmits<{
 
 watch(
   () => props.openUserId,
-  async (newV: string) =>
-    !!newV && (await store.dispatch("userStore/fetchSingleUser", newV))
+  async (id: string) =>
+    !!id &&
+    (await store.dispatch("userStore/fetchSingleUser", {
+      id,
+      ssid: userInfo.ssid,
+    }))
 );
 
 /**
  * 下载日志
  */
 const handleDownLoad = async () =>
-  await store.dispatch("userStore/downloadLog", userDetailInfo.value.id);
+  await store.dispatch("userStore/downloadLog", {
+    id: userDetailInfo.value.id,
+    ssid: userInfo.ssid,
+  });
 
 /**
  * 确认
  */
 const handleConfirm = async () => {
   const { id, status } = userDetailInfo.value;
-  const updateInfo: IUpdateUser = { id: +id, status: status ? "1" : "0" };
+  const updateInfo: IUpdateUser = {
+    id: +id,
+    status: status ? "1" : "0",
+    ssid: userInfo.ssid,
+  };
   const isSucceed: boolean = await store.dispatch(
     "userStore/updateSingleUser",
     updateInfo

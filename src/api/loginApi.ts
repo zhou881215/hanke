@@ -4,19 +4,40 @@
  */
 import { axios } from "../utils";
 
-// 登录
+/**
+ * 登录
+ */
 export interface ILoginData {
   loginId: string;
   loginPwd: string;
 }
-
 // 登录接口-响应数据
 export interface IUserInfo {
   userName: string;
   userRank: string;
+  ssid: string;
 }
+export const loginInApi = async (params: ILoginData): Promise<IUserInfo> =>
+  await axios.post("http://test.zanbox.net/Api/Login/loginIn", params);
 
-// 注册
+/**
+ * 注销
+ */
+export interface ISsid {
+  ssid: string;
+}
+export const loginOutApi = async (params: ISsid): Promise<unknown> =>
+  await axios.post("http://test.zanbox.net/Api/Login/loginOut", params);
+
+/**
+ * 发验证码
+ */
+export const getAuthCodeApi = async (phone: string): Promise<unknown> =>
+  await axios.post("http://test.zanbox.net/Api/Login/getAuthCode", { phone });
+
+/**
+ * 注册
+ */
 export interface IRegisterInfo {
   loginId: string;
   loginPwd: string;
@@ -24,41 +45,19 @@ export interface IRegisterInfo {
   loginPhone: string;
   loginAuth: string;
 }
+export const userRegisterApi = async (
+  params: IRegisterInfo
+): Promise<unknown> =>
+  await axios.post("http://test.zanbox.net/Api/Login/userRegister", params);
 
-// 重置
+/**
+ * 找回密码
+ */
 export interface IRecoverInfo {
   loginPwd: string;
   loginPwdCheck: string;
   loginPhone: string;
   loginAuth: string;
 }
-
-/**
- * 登录
- */
-export const loginInApi = async (params: ILoginData) =>
-  await axios.post("http://test.zanbox.net/Api/Login/loginIn", params);
-
-/**
- * 注销
- */
-export const loginOutApi = async () =>
-  await axios.post("http://test.zanbox.net/Api/Login/loginOut");
-
-/**
- * 发验证码
- */
-export const getAuthCodeApi = async (phone: string) =>
-  await axios.post("http://test.zanbox.net/Api/Login/getAuthCode", { phone });
-
-/**
- * 注册
- */
-export const userRegisterApi = async (params: IRegisterInfo) =>
-  await axios.post("http://test.zanbox.net/Api/Login/userRegister", params);
-
-/**
- * 找回密码
- */
-export const recoverPassApi = async (params: IRecoverInfo) =>
+export const recoverPassApi = async (params: IRecoverInfo): Promise<unknown> =>
   await axios.post("http://test.zanbox.net/Api/Login/recoverPass", params);

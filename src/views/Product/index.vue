@@ -168,7 +168,7 @@ const paginationLayout: Ref<string> = inject(
 /**
  * 搜索相关
  */
-const { searchParam, handleSearch } = useSearch();
+const { searchParam, handleSearch } = useSearch(userInfo);
 
 /**
  * 新增编辑
@@ -186,7 +186,9 @@ const handleOpenForm = (
 };
 
 onMounted(async () => {
-  await store.dispatch("productStore/fetchProductCategory");
+  await store.dispatch("productStore/fetchProductCategory", {
+    ssid: userInfo.ssid,
+  });
   await handleSearch();
 });
 </script>
