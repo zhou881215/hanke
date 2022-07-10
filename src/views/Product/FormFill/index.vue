@@ -19,9 +19,11 @@
         </el-col>
       </el-row>
       <el-form
+        ref="ruleFormRef"
         class="dialog-form"
         :label-position="'top'"
         :model="productDetail"
+        :rules="addProductRules"
       >
         <el-row :gutter="10">
           <el-col
@@ -32,7 +34,7 @@
             :lg="6"
             :key="item.prop"
           >
-            <el-form-item :label="item.label">
+            <el-form-item :label="item.label" :prop="item.prop">
               <el-select
                 v-if="item.select"
                 :disabled="saveSingleLoading"
@@ -62,7 +64,7 @@
       <el-button
         :loading="saveSingleLoading"
         type="primary"
-        @click="handleConfirm"
+        @click="handleConfirm(ruleFormRef)"
       >
         确认
       </el-button>
@@ -75,6 +77,7 @@ import { watch, computed, inject, ref } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
 import { ElMessageBox } from "element-plus";
+import type { ElForm } from "element-plus";
 import type { IUserInfo } from "../../../api/loginApi";
 import type {
   ICategoryOptions,
@@ -83,6 +86,7 @@ import type {
 } from "../../../api/productApi";
 import { cloneDeep } from "../../../utils";
 import { defaultDetail } from "../../../store/productStore";
+import { addProductRules } from "../constant";
 
 const store = useStore();
 const categoryOptions: ComputedRef<Array<ICategoryOptions>> = computed(
@@ -99,9 +103,15 @@ const saveSingleLoading: ComputedRef<boolean> = computed(
 );
 
 /**
+ * 表单ref
+ */
+const ruleFormRef = ref<InstanceType<typeof ElForm>>();
+
+/**
  * 权限
  */
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
+
 /**
  * 响应式
  */
@@ -160,16 +170,21 @@ const handleClose = () => {
 /**
  * 确认
  */
-const handleConfirm = async () => {
-  const isSucceed: boolean = await store.dispatch(
-    "productStore/saveSingleProduct",
-    {
-      ...productDetail.value,
-      xh: +productDetail.value.xh,
-      ssid: userInfo.ssid,
+const handleConfirm = (formEl: InstanceType<typeof ElForm> | undefined) => {
+  if (!formEl) return;
+  formEl.validate(async (valid) => {
+    if (valid) {
+      const isSucceed: boolean = await store.dispatch(
+        "productStore/saveSingleProduct",
+        {
+          ...productDetail.value,
+          xh: +productDetail.value.xh,
+          ssid: userInfo.ssid,
+        }
+      );
+      isSucceed && clearStoreDetail(true);
     }
-  );
-  isSucceed && clearStoreDetail(true);
+  });
 };
 
 /**

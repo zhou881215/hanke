@@ -2,6 +2,9 @@
  * @Author: Cram
  * @Date: 2022-06-27 17:39:56
  */
+import { reactive } from "vue";
+import type { FormRules } from "element-plus";
+
 export const ProColumn = [
   // { prop: "xh", label: "序号", width: 80 },
   { prop: "lb", label: "类别", width: 150, select: true },
@@ -27,3 +30,11 @@ export const ProColumn = [
   { prop: "zyzq", label: "制样周期", width: 200 },
   { prop: "ztfy", label: "制样费用", width: 200 },
 ];
+
+export const addProductRules = reactive<FormRules>({
+  jcxm: [{ required: true, message: "请输入检测项目", trigger: "blur" }],
+  jcbz: [{ required: true, message: "请输入检测标准", trigger: "blur" }],
+  cma: [{ required: true, message: "请输入CMA资质", trigger: "blur" }],
+  cnas: [{ required: true, message: "请输入CNAS资质", trigger: "blur" }],
+  gys: [{ required: true, message: "请输入供应商名称", trigger: "blur" }],
+});

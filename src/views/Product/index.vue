@@ -4,7 +4,7 @@
 -->
 <template>
   <el-form :inline="true" :model="searchParam" class="search-area">
-    <el-form-item label="产品类别">
+    <el-form-item v-if="userInfo.userRank === '1'" label="产品类别">
       <el-select :disabled="productLoading" v-model="searchParam.lb" clearable>
         <el-option
           v-for="item in categoryOptions"
@@ -82,7 +82,7 @@
       :table-layout="'auto'"
     >
       <template #empty>
-        <el-empty description="哎呀，暂时没有数据！" />
+        <el-empty description="哎呀，暂时没有数据！请查询" />
       </template>
       <el-table-column prop="xh" label="序号" width="100" />
       <el-table-column
@@ -189,7 +189,7 @@ onMounted(async () => {
   await store.dispatch("productStore/fetchProductCategory", {
     ssid: userInfo.ssid,
   });
-  await handleSearch();
+  // await handleSearch();
 });
 </script>
 
