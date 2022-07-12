@@ -51,10 +51,15 @@ export interface IUserDetailInfo {
   status: "0" | "1"; // 是否审核，0 -> 未审核；1 -> 审核
 }
 
+export interface ILog {
+  content: string;
+  id: string;
+  logintime: string;
+}
 export interface IUserLog {
   loginTime: string; // 登录时间
-  visitLog: Array<string>; // 查看记录
-  searchLog: Array<string>; // 搜索记录
+  visitLog: Array<ILog>; // 查看记录
+  searchLog: Array<ILog>; // 搜索记录
 }
 
 export interface IUserDetail {

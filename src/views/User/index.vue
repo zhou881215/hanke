@@ -17,6 +17,7 @@
       v-loading="userLoading"
       element-loading-text="Loading..."
       :data="userData.list"
+      :height="tableHeight()"
       border
       stripe
       style="width: 100%"
@@ -69,7 +70,7 @@
         v-model:currentPage="fetchParam.p"
         v-model:page-size="fetchParam.pageSize"
         :background="true"
-        :page-sizes="[10, 20, 40, 80]"
+        :page-sizes="[10, 50, 100]"
         :layout="paginationLayout"
         :total="+userData.count"
         @size-change="handleFetch"
@@ -142,6 +143,8 @@ const handleOpenDetail = (
     handleFetch();
   }
 };
+
+const tableHeight = () => document.body.offsetHeight - 344;
 
 onMounted(() => {
   handleFetch();

@@ -15,7 +15,10 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon><Monitor /></el-icon> 用户ID
+                <el-icon>
+                  <Monitor />
+                </el-icon>
+                用户ID
               </div>
             </template>
             {{ userDetailInfo.id }}
@@ -23,7 +26,10 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon><User /></el-icon> 用户名
+                <el-icon>
+                  <User />
+                </el-icon>
+                用户名
               </div>
             </template>
             {{ userDetailInfo.username }}
@@ -39,7 +45,10 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon><Lock /></el-icon> 手机号码
+                <el-icon>
+                  <Lock />
+                </el-icon>
+                手机号码
               </div>
             </template>
             {{ userDetailInfo.phone }}
@@ -47,7 +56,10 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon><Clock /></el-icon> 注册时间
+                <el-icon>
+                  <Clock />
+                </el-icon>
+                注册时间
               </div>
             </template>
             {{ userDetailInfo.regdate }}
@@ -55,7 +67,10 @@
           <el-descriptions-item>
             <template #label>
               <div class="cell-item">
-                <el-icon><TurnOff /></el-icon> 是否审核
+                <el-icon>
+                  <TurnOff />
+                </el-icon>
+                是否审核
               </div>
             </template>
             <el-switch
@@ -77,7 +92,7 @@
             <div class="collapse-chunk">
               <div class="collapse-chunk-title">浏览记录</div>
               <el-tag
-                v-for="(log, site) in item.visitLog"
+                v-for="(log, site) in filterLog(item.visitLog)"
                 :key="site"
                 :type="randomType[Math.floor(Math.random() * 5)]"
                 effect="dark"
@@ -90,7 +105,7 @@
             <div class="collapse-chunk">
               <div class="collapse-chunk-title">搜索记录</div>
               <el-tag
-                v-for="(log, site) in item.searchLog"
+                v-for="(log, site) in filterLog(item.searchLog)"
                 :key="site"
                 :type="randomType[Math.floor(Math.random() * 5)]"
                 effect="dark"
@@ -140,6 +155,7 @@ import type {
   IUpdateUser,
   IUserDetailInfo,
   IUserLog,
+  ILog,
 } from "../../../api/userApi";
 
 const randomType = ["", "success", "info", "danger", "warning"];
@@ -159,6 +175,7 @@ const userDetailLogo: ComputedRef<Array<IUserLog>> = computed(
  * 权限
  */
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
+
 /**
  * 响应式
  */
@@ -190,6 +207,20 @@ watch(
       ssid: userInfo.ssid,
     }))
 );
+
+/**
+ * filter log
+ */
+const filterLog = (item: Array<ILog>) => {
+  const result: Array<string> = [];
+  item.forEach(({ content }) => {
+    if (!result.includes(content)) {
+      result.push(content);
+    }
+  });
+
+  return result;
+};
 
 /**
  * 下载日志

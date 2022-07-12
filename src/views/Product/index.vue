@@ -75,7 +75,7 @@
       v-loading="productLoading"
       element-loading-text="Loading..."
       :data="productData.list"
-      height="500"
+      :height="tableHeight()"
       border
       stripe
       style="width: 100%"
@@ -108,6 +108,7 @@
         v-model:currentPage="searchParam.p"
         v-model:page-size="searchParam.pageSize"
         :background="true"
+        :page-sizes="[10, 50, 100]"
         :layout="paginationLayout"
         :total="+productData.count"
         @size-change="() => handleSearch()"
@@ -184,6 +185,8 @@ const handleOpenForm = (
   dialogVisible.value = openFlag;
   fetchFlag && handleSearch();
 };
+
+const tableHeight = () => document.body.offsetHeight - 424;
 
 onMounted(async () => {
   await store.dispatch("productStore/fetchProductCategory", {
