@@ -65,7 +65,7 @@ const userLoading: ComputedRef<boolean> = computed(
  * 用户
  */
 const userInfo: IUserInfo = ((): IUserInfo => {
-  const localUserInfo: string | null = localStorage.getItem(UserLocal);
+  const localUserInfo: string | null = sessionStorage.getItem(UserLocal);
   try {
     return JSON.parse(localUserInfo as string);
   } catch (error) {

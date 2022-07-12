@@ -108,7 +108,7 @@
         v-model:currentPage="searchParam.p"
         v-model:page-size="searchParam.pageSize"
         :background="true"
-        :page-sizes="[10, 50, 100]"
+        :page-sizes="[20, 50, 100]"
         :layout="paginationLayout"
         :total="+productData.count"
         @size-change="() => handleSearch()"

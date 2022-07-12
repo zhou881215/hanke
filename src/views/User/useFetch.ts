@@ -11,7 +11,7 @@ export default function (userInfo: IUserInfo) {
   const store = useStore();
 
   const fetchParam = ref<IFetchUser>({
-    pageSize: 10,
+    pageSize: 20,
     p: 1,
     ssid: userInfo.ssid,
   });

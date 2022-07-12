@@ -70,7 +70,7 @@
         v-model:currentPage="fetchParam.p"
         v-model:page-size="fetchParam.pageSize"
         :background="true"
-        :page-sizes="[10, 50, 100]"
+        :page-sizes="[20, 50, 100]"
         :layout="paginationLayout"
         :total="+userData.count"
         @size-change="handleFetch"

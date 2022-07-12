@@ -49,7 +49,7 @@ export default {
       const { flag, response } = (await loginInApi(payload)) as any;
       if (flag) {
         commit("setUser", response);
-        localStorage.setItem(UserLocal, JSON.stringify(response));
+        sessionStorage.setItem(UserLocal, JSON.stringify(response));
       }
       commit("setLoading", false);
       return flag;
@@ -62,7 +62,7 @@ export default {
       const { flag } = (await loginOutApi(payload)) as any;
       if (flag) {
         commit("setUser", null);
-        localStorage.removeItem(UserLocal);
+        sessionStorage.removeItem(UserLocal);
       }
       commit("setLoading", false);
       return flag;

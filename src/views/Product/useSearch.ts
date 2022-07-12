@@ -16,7 +16,7 @@ export default function (userInfo: IUserInfo) {
     jcxm: "",
     lb: "",
     cpmc: "",
-    pageSize: 10,
+    pageSize: 20,
     p: 1,
   };
 

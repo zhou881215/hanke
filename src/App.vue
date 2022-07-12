@@ -18,7 +18,7 @@ import zhCn from "element-plus/lib/locale/lang/zh-cn";
 const router = useRouter();
 
 onMounted(() => {
-  const localUserInfo: string | null = localStorage.getItem(UserLocal);
+  const localUserInfo: string | null = sessionStorage.getItem(UserLocal);
   if (!localUserInfo) {
     router.push({ name: "login" });
   }
