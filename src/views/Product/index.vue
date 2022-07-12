@@ -75,6 +75,7 @@
       v-loading="productLoading"
       element-loading-text="Loading..."
       :data="productData.list"
+      height="500"
       border
       stripe
       style="width: 100%"
