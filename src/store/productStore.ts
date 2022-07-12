@@ -106,7 +106,9 @@ export default {
     async fetchProduct({ commit }: any, payload: ISearchParam) {
       commit("setLoading", true);
       const { flag, response } = (await fetchProductApi(payload)) as any;
-      flag && commit("setProduct", response);
+      flag
+        ? commit("setProduct", response)
+        : commit("setProduct", { list: [], count: "0" });
       commit("setLoading", false);
     },
     /**
