@@ -5,7 +5,7 @@
 <template>
   <el-dialog
     v-model="props.dialogVisible"
-    :title="(props.activeId ? '修改' : '新增') + '数据'"
+    :title="(props.activeId && !props.copyFlag ? '修改' : '新增') + '数据'"
     :width="dialogWidth"
     :before-close="handleClose"
   >
@@ -123,16 +123,12 @@ const dialogWidth: ComputedRef<string> = computed(() =>
 const props = defineProps<{
   dialogVisible: boolean;
   activeId: string;
+  copyFlag: boolean;
   showColumn: any;
 }>();
 
 const emit = defineEmits<{
-  (
-    e: "handleOpenForm",
-    openFlag: boolean,
-    fetchFlag?: boolean,
-    row?: IProduct
-  ): void;
+  (e: "handleOpenForm", openFlag: boolean, params?: any): void;
 }>();
 
 /**
@@ -174,13 +170,23 @@ const handleConfirm = (formEl: InstanceType<typeof ElForm> | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid) => {
     if (valid) {
+      const originParams: IProduct = {
+        ...productDetail.value,
+        xh: +productDetail.value.xh,
+        ssid: userInfo.ssid,
+      };
+
+      if (props.copyFlag) {
+        originParams.xh = 0;
+        originParams.id = "";
+        delete originParams.addtime;
+        delete originParams.ishidden;
+        delete originParams.user_id;
+      }
+
       const isSucceed: boolean = await store.dispatch(
         "productStore/saveSingleProduct",
-        {
-          ...productDetail.value,
-          xh: +productDetail.value.xh,
-          ssid: userInfo.ssid,
-        }
+        originParams
       );
       isSucceed && clearStoreDetail(true);
     }
@@ -191,7 +197,7 @@ const handleConfirm = (formEl: InstanceType<typeof ElForm> | undefined) => {
  * 关闭并重置store
  */
 const clearStoreDetail = (fetchFlag?: boolean) => {
-  emit("handleOpenForm", false, fetchFlag);
+  emit("handleOpenForm", false, { fetch: fetchFlag });
   store.commit("productStore/setDetail", cloneDeep(defaultDetail));
 };
 </script>

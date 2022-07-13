@@ -92,13 +92,19 @@
         :width="item.width"
         :key="item.prop"
       />
-      <el-table-column fixed="right" align="center" label="操作" width="70">
+      <el-table-column fixed="right" align="center" label="操作" width="120">
         <template #default="{ row }">
           <el-button
             :icon="Edit"
             size="small"
             type="primary"
-            @click="handleOpenForm(true, false, row)"
+            @click="handleOpenForm(true, { xh: row.xh })"
+          />
+          <el-button
+            :icon="CopyDocument"
+            size="small"
+            type="primary"
+            @click="handleOpenForm(true, { copy: true, xh: row.xh })"
           />
         </template>
       </el-table-column>
@@ -120,6 +126,7 @@
     :showColumn="showColumn"
     :dialogVisible="dialogVisible"
     :activeId="activeId"
+    :copyFlag="copyFlag"
     @handleOpenForm="handleOpenForm"
   />
 </template>
@@ -128,13 +135,15 @@
 import { onMounted, computed, ref, inject } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
-import { Search, Refresh, CirclePlus, Edit } from "@element-plus/icons-vue";
+import {
+  Search,
+  Refresh,
+  CirclePlus,
+  Edit,
+  CopyDocument,
+} from "@element-plus/icons-vue";
 import useSearch from "./useSearch";
-import type {
-  ICategoryOptions,
-  IProduct,
-  IProductData,
-} from "../../api/productApi";
+import type { ICategoryOptions, IProductData } from "../../api/productApi";
 import type { IUserInfo } from "../../api/loginApi";
 import { ProColumn } from "./constant";
 import FormFill from "./FormFill/index.vue";
@@ -176,14 +185,15 @@ const { searchParam, handleSearch } = useSearch(userInfo);
  */
 const dialogVisible: Ref<boolean> = ref<boolean>(false);
 const activeId: Ref<string> = ref<string>("");
+const copyFlag: Ref<boolean> = ref<boolean>(false);
 const handleOpenForm = (
   openFlag: boolean, // 是否打开
-  fetchFlag?: boolean, // 是否重新查询
-  row?: IProduct
+  { fetch = false, copy = false, xh = "" }: any = {} // 关闭时是否查询列表、是否是复制、当前行序号
 ) => {
-  activeId.value = row ? (row.xh as string) : "";
   dialogVisible.value = openFlag;
-  fetchFlag && handleSearch();
+  activeId.value = xh;
+  copyFlag.value = copy;
+  fetch && handleSearch();
 };
 
 const tableHeight = () => document.body.offsetHeight - 424;
