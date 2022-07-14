@@ -94,7 +94,7 @@
               <el-tag
                 v-for="(log, site) in filterLog(item.visitLog)"
                 :key="site"
-                :type="randomType[Math.floor(Math.random() * 5)]"
+                :color="randomColor()"
                 effect="dark"
                 round
                 class="tag-item"
@@ -107,7 +107,7 @@
               <el-tag
                 v-for="(log, site) in filterLog(item.searchLog)"
                 :key="site"
-                :type="randomType[Math.floor(Math.random() * 5)]"
+                :color="randomColor()"
                 effect="dark"
                 round
                 class="tag-item"
@@ -158,7 +158,7 @@ import type {
   ILog,
 } from "../../../api/userApi";
 
-const randomType = ["", "success", "info", "danger", "warning"];
+// const randomType = ["", "success", "info", "danger", "warning"];
 
 const store = useStore();
 const userDetailLoading: ComputedRef<boolean> = computed(
@@ -254,6 +254,14 @@ const handleConfirm = async () => {
 const confirmClose = (fetchFlag?: boolean) => {
   emit("handleOpenDetail", false, fetchFlag);
 };
+
+/**
+ * random Color
+ */
+const random = (max: number, min: number) =>
+  Math.floor(Math.random() * (max - min) + min);
+const randomColor = () =>
+  `rgb(${random(0, 230)}, ${random(0, 230)}, ${random(0, 230)})`;
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
