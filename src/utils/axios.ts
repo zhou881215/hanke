@@ -19,7 +19,7 @@ service.interceptors.response.use(({ data: result }: any) => {
   if (!flag) {
     ElNotification.error({
       title: "出错了！",
-      message: msg,
+      message: msg || "权限不足，请输入关键词重试",
     });
   }
   return { flag, response: flag ? data : msg };

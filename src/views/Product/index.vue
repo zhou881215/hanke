@@ -52,9 +52,14 @@
         重置
       </el-button>
     </el-form-item>
+    <el-form-item>
+      <div class="explain">
+        * 查询出产品后，可在表格内按住Shift+滚轮进行横向滑动 *
+      </div>
+    </el-form-item>
   </el-form>
   <div class="product-main">
-    <div class="product-inset">
+    <div class="product-inset" v-if="userInfo.userRank === '1'">
       <!-- <el-upload
         class="doc-upload"
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -92,7 +97,13 @@
         :width="item.width"
         :key="item.prop"
       />
-      <el-table-column fixed="right" align="center" label="操作" width="120">
+      <el-table-column
+        v-if="userInfo.userRank === '1'"
+        fixed="right"
+        align="center"
+        label="操作"
+        width="120"
+      >
         <template #default="{ row }">
           <el-button
             :icon="Edit"
@@ -196,7 +207,10 @@ const handleOpenForm = (
   fetch && handleSearch();
 };
 
-const tableHeight = () => document.body.offsetHeight - 424;
+const tableHeight = () => {
+  const fixedHeight = userInfo.userRank === "1" ? 424 : 372;
+  return document.body.offsetHeight - fixedHeight;
+};
 
 onMounted(async () => {
   await store.dispatch("productStore/fetchProductCategory", {
