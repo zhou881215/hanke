@@ -45,6 +45,7 @@
         查询
       </el-button>
       <el-button
+        v-if="userInfo.userRank === '1'"
         @click="() => handleSearch(true)"
         :loading="productLoading"
         :icon="Refresh"
