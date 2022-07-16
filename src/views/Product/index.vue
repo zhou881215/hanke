@@ -19,6 +19,7 @@
         :disabled="productLoading"
         v-model="searchParam.cpmc"
         placeholder="产品名称"
+        @change="() => handleSearch()"
       />
     </el-form-item>
     <el-form-item label="检测项目">
@@ -26,13 +27,15 @@
         :disabled="productLoading"
         v-model="searchParam.jcxm"
         placeholder="检测项目"
+        @change="() => handleSearch()"
       />
     </el-form-item>
-    <el-form-item label="检测标准">
+    <el-form-item label="检测标准" v-if="userInfo.userRank === '1'">
       <el-input
         :disabled="productLoading"
         v-model="searchParam.jcbz"
         placeholder="检测标准"
+        @change="() => handleSearch()"
       />
     </el-form-item>
     <el-form-item>
@@ -52,11 +55,6 @@
       >
         重置
       </el-button>
-    </el-form-item>
-    <el-form-item>
-      <div class="explain">
-        * 查询出产品后，可在表格内按住Shift+滚轮进行横向滑动 *
-      </div>
     </el-form-item>
   </el-form>
   <div class="product-main">
