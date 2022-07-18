@@ -21,6 +21,7 @@
       border
       stripe
       style="width: 100%"
+      scrollbar-always-on
       :header-cell-style="{ background: '#E6E8EB', color: '#303133' }"
       :table-layout="'auto'"
     >

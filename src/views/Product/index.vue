@@ -30,7 +30,7 @@
         @change="() => handleSearch()"
       />
     </el-form-item>
-    <el-form-item label="检测标准" v-if="userInfo.userRank === '1'">
+    <el-form-item label="检测标准">
       <el-input
         :disabled="productLoading"
         v-model="searchParam.jcbz"
@@ -83,6 +83,7 @@
       border
       stripe
       style="width: 100%"
+      scrollbar-always-on
       :header-cell-style="{ background: '#E6E8EB', color: '#303133' }"
     >
       <template #empty>
