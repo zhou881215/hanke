@@ -17,7 +17,7 @@ export const fetchProductCategoryApi = async (
   params: ISsid
 ): Promise<Array<ICategoryOptions>> =>
   await axios.post(
-    "http://test.zanbox.net/Api/Product/fetchProductCategory",
+    "http://admin.test-database.com/Api/Product/fetchProductCategory",
     params
   );
 
@@ -68,7 +68,7 @@ export interface IProductData {
 export const fetchProductApi = async (
   params: ISearchParam
 ): Promise<IProductData> =>
-  await axios.post("http://test.zanbox.net/Api/Product/fetchProduct", params);
+  await axios.post("http://admin.test-database.com/Api/Product/fetchProduct", params);
 
 /**
  * 查询当日新增
@@ -82,7 +82,7 @@ export const fetchCurrentTotalApi = async (
   params: ISsid
 ): Promise<ICurrentToday> =>
   await axios.post(
-    "http://test.zanbox.net/Api/Product/fetchCurrentTotal",
+    "http://admin.test-database.com/Api/Product/fetchCurrentTotal",
     params
   );
 
@@ -94,7 +94,7 @@ export interface IFetchDetail {
   ssid: string;
 }
 export const fetchDetailApi = async (params: IFetchDetail): Promise<IProduct> =>
-  await axios.post("http://test.zanbox.net/Api/Product/fetchDetail", params);
+  await axios.post("http://admin.test-database.com/Api/Product/fetchDetail", params);
 
 /**
  * 新增\更新单条产品
@@ -103,6 +103,6 @@ export const saveSingleProductApi = async (
   params: IProduct
 ): Promise<unknown> =>
   await axios.post(
-    "http://test.zanbox.net/Api/Product/saveSingleProduct",
+    "http://admin.test-database.com/Api/Product/saveSingleProduct",
     params
   );

@@ -27,7 +27,7 @@ export interface IUserData {
   count: string;
 }
 export const fetchUserApi = async (params: IFetchUser): Promise<IUserData> =>
-  await axios.post("http://test.zanbox.net/Api/Users/fetchUser", params);
+  await axios.post("http://admin.test-database.com/Api/Users/fetchUser", params);
 
 /**
  * 删除用户
@@ -37,7 +37,7 @@ export interface IUserSsid {
   ssid: string;
 }
 export const deleteUserApi = async (params: IUserSsid): Promise<unknown> =>
-  await axios.post("http://test.zanbox.net/Api/Users/deleteUser", params);
+  await axios.post("http://admin.test-database.com/Api/Users/deleteUser", params);
 
 /**
  * 查询用户详情
@@ -69,7 +69,7 @@ export interface IUserDetail {
 export const fetchSingleUserApi = async (
   params: IUserSsid
 ): Promise<IUserDetail> =>
-  await axios.post("http://test.zanbox.net/Api/Users/fetchSingleUser", params);
+  await axios.post("http://admin.test-database.com/Api/Users/fetchSingleUser", params);
 
 /**
  * 更新用户
@@ -82,10 +82,10 @@ export interface IUpdateUser {
 export const updateSingleUserApi = async (
   params: IUpdateUser
 ): Promise<unknown> =>
-  await axios.post("http://test.zanbox.net/Api/Users/updateSingleUser", params);
+  await axios.post("http://admin.test-database.com/Api/Users/updateSingleUser", params);
 
 /**
  * 下载日志
  */
 export const downloadLogApi = async (params: IUserSsid): Promise<string> =>
-  await axios.post("http://test.zanbox.net/Api/Users/downloadLog", params);
+  await axios.post("http://admin.test-database.com/Api/Users/downloadLog", params);

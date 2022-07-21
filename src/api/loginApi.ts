@@ -18,7 +18,7 @@ export interface IUserInfo {
   ssid: string;
 }
 export const loginInApi = async (params: ILoginData): Promise<IUserInfo> =>
-  await axios.post("http://test.zanbox.net/Api/Login/loginIn", params);
+  await axios.post("http://admin.test-database.com/Api/Login/loginIn", params);
 
 /**
  * 注销
@@ -27,13 +27,13 @@ export interface ISsid {
   ssid: string;
 }
 export const loginOutApi = async (params: ISsid): Promise<unknown> =>
-  await axios.post("http://test.zanbox.net/Api/Login/loginOut", params);
+  await axios.post("http://admin.test-database.com/Api/Login/loginOut", params);
 
 /**
  * 发验证码
  */
 export const getAuthCodeApi = async (phone: string): Promise<unknown> =>
-  await axios.post("http://test.zanbox.net/Api/Login/getAuthCode", { phone });
+  await axios.post("http://admin.test-database.com/Api/Login/getAuthCode", { phone });
 
 /**
  * 注册
@@ -48,7 +48,7 @@ export interface IRegisterInfo {
 export const userRegisterApi = async (
   params: IRegisterInfo
 ): Promise<unknown> =>
-  await axios.post("http://test.zanbox.net/Api/Login/userRegister", params);
+  await axios.post("http://admin.test-database.com/Api/Login/userRegister", params);
 
 /**
  * 找回密码
@@ -60,4 +60,4 @@ export interface IRecoverInfo {
   loginAuth: string;
 }
 export const recoverPassApi = async (params: IRecoverInfo): Promise<unknown> =>
-  await axios.post("http://test.zanbox.net/Api/Login/recoverPass", params);
+  await axios.post("http://admin.test-database.com/Api/Login/recoverPass", params);
