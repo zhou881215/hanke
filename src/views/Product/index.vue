@@ -4,7 +4,7 @@
 -->
 <template>
   <el-form :inline="true" :model="searchParam" class="search-area">
-    <el-form-item v-if="userInfo.userRank === '1'" label="产品类别">
+    <el-form-item v-if="userInfo.userRank !== '0'" label="产品类别">
       <el-select :disabled="productLoading" v-model="searchParam.lb" clearable>
         <el-option
           v-for="item in categoryOptions"
@@ -48,7 +48,7 @@
         查询
       </el-button>
       <el-button
-        v-if="userInfo.userRank === '1'"
+        v-if="userInfo.userRank !== '0'"
         @click="() => handleSearch(true)"
         :loading="productLoading"
         :icon="Refresh"
@@ -79,7 +79,7 @@
       v-loading="productLoading"
       element-loading-text="Loading..."
       :data="productData.list"
-      :height="tableHeight()"
+      :height="500"
       border
       stripe
       style="width: 100%"
@@ -207,10 +207,10 @@ const handleOpenForm = (
   fetch && handleSearch();
 };
 
-const tableHeight = () => {
-  const fixedHeight = userInfo.userRank === "1" ? 424 : 372;
-  return document.body.offsetHeight - fixedHeight;
-};
+// const tableHeight = () => {
+//   const fixedHeight = userInfo.userRank === "1" ? 424 : 372;
+//   return document.body.offsetHeight - fixedHeight;
+// };
 
 onMounted(async () => {
   await store.dispatch("productStore/fetchProductCategory", {

@@ -17,7 +17,7 @@
       v-loading="userLoading"
       element-loading-text="Loading..."
       :data="userData.list"
-      :height="tableHeight()"
+      :height="500"
       border
       stripe
       style="width: 100%"
@@ -145,7 +145,7 @@ const handleOpenDetail = (
   }
 };
 
-const tableHeight = () => document.body.offsetHeight - 344;
+// const tableHeight = () => document.body.offsetHeight - 344;
 
 onMounted(() => {
   handleFetch();

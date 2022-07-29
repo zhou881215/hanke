@@ -12,9 +12,7 @@
         </div>
         <div class="tool-btn">
           <span>用户名：{{ userInfo.userName }}； </span>
-          <span
-            >用户等级：{{ userInfo.userRank === "1" ? "管理员" : "用户" }}</span
-          >
+          <span>用户等级：{{ determineLevel(userInfo.userRank) }}</span>
           <el-button
             type="primary"
             size="small"
@@ -73,6 +71,11 @@ const userInfo: IUserInfo = ((): IUserInfo => {
   }
 })();
 provide("userInfo", userInfo);
+
+const determineLevel = (userRank: string) => {
+  const list = ["普通用户", "超级管理员", "普通管理员"];
+  return list[+userRank];
+};
 
 /**
  * 退出
