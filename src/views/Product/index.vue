@@ -175,7 +175,7 @@ const productData: ComputedRef<IProductData> = computed(
  */
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
 const showColumn = ProColumn.filter(({ prop }) => {
-  return userInfo.userRank === "1" || (prop !== "cb" && prop !== "gys");
+  return userInfo.userRank !== "0" || (prop !== "cb" && prop !== "gys");
 });
 
 /**
