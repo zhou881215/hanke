@@ -4,6 +4,7 @@
  */
 import productRouter from "./productRouter";
 import userRouter from "./userRouter";
+import compositeRouter from "./compositeRouter";
 
 const components = {
   MainLayout: () => import("../views/mainLayout/index.vue"),
@@ -15,6 +16,6 @@ export default [
     path: "/",
     component: components.MainLayout,
     redirect: "/product",
-    children: [...productRouter, ...userRouter],
+    children: [...productRouter, ...userRouter, ...compositeRouter],
   },
 ];

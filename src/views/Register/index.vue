@@ -10,6 +10,7 @@
       </div>
     </div>
     <div class="login-main">
+      <h1 class="page-title">数据库查询系统</h1>
       <el-form
         ref="registerFormRef"
         :model="registerForm"

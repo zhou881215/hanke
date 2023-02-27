@@ -38,6 +38,14 @@
         @change="() => handleSearch()"
       />
     </el-form-item>
+    <el-form-item label="城市">
+      <el-input
+        :disabled="productLoading"
+        v-model="searchParam.jcbz"
+        placeholder="城市"
+        @change="() => handleSearch()"
+      />
+    </el-form-item>
     <el-form-item>
       <el-button
         type="primary"
