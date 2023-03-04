@@ -17,7 +17,7 @@
       v-loading="userLoading"
       element-loading-text="Loading..."
       :data="userData.list"
-      :height="500"
+      :height="600"
       border
       stripe
       style="width: 100%"

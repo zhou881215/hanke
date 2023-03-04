@@ -5,12 +5,14 @@
 import { createStore, createLogger } from "vuex";
 import loginStore from "./loginStore";
 import productStore from "./productStore";
+import productNewStore from "./productNewStore";
 import userStore from "./userStore";
 
 export default createStore({
   modules: {
     loginStore,
     productStore,
+    productNewStore,
     userStore,
   },
   plugins: [createLogger()],
