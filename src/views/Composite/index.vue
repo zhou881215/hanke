@@ -71,6 +71,13 @@
       </el-button>
     </el-form-item>
   </el-form>
+  <el-checkbox-group v-model="checkedList" class="checkbox-area">
+    <el-checkbox
+      v-for="item in allShowColumn"
+      :key="item.prop"
+      :label="item.label"
+    />
+  </el-checkbox-group>
   <div class="product-main">
     <el-table
       v-loading="productNewLoading"
@@ -78,7 +85,7 @@
       :data="productNewData.list"
       :span-method="arraySpanMethod"
       :row-class-name="tableRowClassName"
-      :height="550"
+      :height="450"
       border
       stripe
       style="width: 100%"
@@ -89,7 +96,7 @@
         <el-empty description="哎呀，暂时没有数据！请查询" />
       </template>
       <el-table-column
-        v-for="item in showColumn"
+        v-for="item in finalColumns"
         :prop="item.prop"
         :label="item.label"
         :width="item.width"
@@ -112,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, ref, inject } from "vue";
+import { onMounted, computed, watch, ref, inject } from "vue";
 import type { ComputedRef, Ref } from "vue";
 import { useStore } from "vuex";
 import { Search, Refresh } from "@element-plus/icons-vue";
@@ -135,13 +142,14 @@ const productNewData: ComputedRef<IProductNewData> = computed(
  */
 const arraySpanMethod = ({ row, column, rowIndex, columnIndex }: any) => {
   const { customTitle, titleFlagArr, xmFlagArr } = row;
+  const { property } = column;
   if (customTitle) {
     return [1, ProColumn.length];
   }
-  if (columnIndex === 1) {
+  if (property === "title") {
     return handleMerge(rowIndex, titleFlagArr);
   }
-  if (columnIndex === 2) {
+  if (property === "xm") {
     return handleMerge(rowIndex, xmFlagArr);
   }
 };
@@ -174,13 +182,27 @@ const tableRowClassName = ({ row }: any) =>
  * 权限
  */
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
-const showColumn = ProColumn.filter(({ prop }) => {
+const allShowColumn = ProColumn.filter(({ prop }) => {
   // 成本 | 供应商名称 | 城市 | 接单须知
   return (
     userInfo.userRank !== "0" ||
     (prop !== "oprice" && prop !== "gys" && prop !== "city" && prop !== "xuzhi")
   );
 });
+
+/**
+ * 栏目
+ */
+const checkedList = ref(allShowColumn.map(({ label }) => label));
+// watch(
+//   () => checkedList.value,
+//   (newV) => {
+//     console.log("🚀 ~ file: index.vue:200 ~ newV:", newV);
+//   }
+// );
+const finalColumns: ComputedRef<Array<any>> = computed(() =>
+  allShowColumn.filter(({ label }) => checkedList.value.includes(label))
+);
 
 /**
  * 响应式
@@ -201,3 +223,4 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="less" src="./index.less"></style>
+<style scoped lang="less" src="./phone.less"></style>
