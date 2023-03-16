@@ -57,6 +57,13 @@
       </el-button>
     </el-form-item>
   </el-form>
+  <el-checkbox-group v-model="checkedList" class="checkbox-area">
+    <el-checkbox
+      v-for="item in allShowColumn"
+      :key="item.prop"
+      :label="item.label"
+    />
+  </el-checkbox-group>
   <div class="product-main">
     <div class="product-inset" v-if="userInfo.userRank === '1'">
       <!-- <el-upload
@@ -79,7 +86,7 @@
       v-loading="productLoading"
       element-loading-text="Loading..."
       :data="productData.list"
-      :height="500"
+      :height="450"
       border
       stripe
       style="width: 100%"
@@ -89,9 +96,9 @@
       <template #empty>
         <el-empty description="哎呀，暂时没有数据！请查询" />
       </template>
-      <el-table-column prop="xh" label="序号" width="100" />
+      <!-- <el-table-column prop="xh" label="序号" width="100" /> -->
       <el-table-column
-        v-for="item in showColumn"
+        v-for="item in finalColumns"
         :prop="item.prop"
         :label="item.label"
         :width="item.width"
@@ -134,7 +141,7 @@
     </div>
   </div>
   <FormFill
-    :showColumn="showColumn"
+    :showColumn="finalColumns"
     :dialogVisible="dialogVisible"
     :activeId="activeId"
     :copyFlag="copyFlag"
@@ -173,10 +180,21 @@ const productData: ComputedRef<IProductData> = computed(
 /**
  * 权限
  */
+const authorityArr: Array<string> = ["cb", "gys"];
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
-const showColumn = ProColumn.filter(({ prop }) => {
-  return userInfo.userRank !== "0" || (prop !== "cb" && prop !== "gys");
+const allShowColumn = ProColumn.filter(({ prop }) => {
+  return userInfo.userRank !== "0" || !authorityArr.includes(prop);
 });
+
+/**
+ * 栏目
+ */
+const checkedList: Ref<Array<string>> = ref(
+  allShowColumn.map(({ label }) => label)
+);
+const finalColumns: ComputedRef<Array<any>> = computed(() =>
+  allShowColumn.filter(({ label }) => checkedList.value.includes(label))
+);
 
 /**
  * 响应式

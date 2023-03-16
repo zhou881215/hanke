@@ -181,25 +181,20 @@ const tableRowClassName = ({ row }: any) =>
 /**
  * 权限
  */
+
+// 成本 | 供应商名称 | 城市 | 接单须知 | 电话
+const authorityArr: Array<string> = ["oprice", "gys", "city", "xuzhi", "tel"];
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
 const allShowColumn = ProColumn.filter(({ prop }) => {
-  // 成本 | 供应商名称 | 城市 | 接单须知
-  return (
-    userInfo.userRank !== "0" ||
-    (prop !== "oprice" && prop !== "gys" && prop !== "city" && prop !== "xuzhi")
-  );
+  return userInfo.userRank !== "0" || !authorityArr.includes(prop);
 });
 
 /**
  * 栏目
  */
-const checkedList = ref(allShowColumn.map(({ label }) => label));
-// watch(
-//   () => checkedList.value,
-//   (newV) => {
-//     console.log("🚀 ~ file: index.vue:200 ~ newV:", newV);
-//   }
-// );
+const checkedList: Ref<Array<string>> = ref(
+  allShowColumn.map(({ label }) => label)
+);
 const finalColumns: ComputedRef<Array<any>> = computed(() =>
   allShowColumn.filter(({ label }) => checkedList.value.includes(label))
 );

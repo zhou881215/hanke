@@ -6,7 +6,7 @@ import { reactive } from "vue";
 import type { FormRules } from "element-plus";
 
 export const ProColumn = [
-  // { prop: "xh", label: "序号", width: 80 },
+  { prop: "xh", label: "序号", width: 100 },
   { prop: "lb", label: "类别", width: 150, select: true },
   { prop: "cpmc", label: "产品名称", width: 200 },
   { prop: "jcxm", label: "检测项目", width: 200 },
