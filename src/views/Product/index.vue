@@ -57,13 +57,20 @@
       </el-button>
     </el-form-item>
   </el-form>
-  <el-checkbox-group v-model="checkedList" class="checkbox-area">
+  <div class="checkbox-area">
     <el-checkbox
-      v-for="item in allShowColumn"
-      :key="item.prop"
-      :label="item.label"
+      v-model="checkAll"
+      :indeterminate="isIndeterminate"
+      @change="handleCheckAllChange"
+      label="全选"
     />
-  </el-checkbox-group>
+    <el-checkbox-group
+      v-model="checkedList"
+      @change="handleCheckedColumnsChange"
+    >
+      <el-checkbox v-for="col in allColumnStringMap" :key="col" :label="col" />
+    </el-checkbox-group>
+  </div>
   <div class="product-main">
     <div class="product-inset" v-if="userInfo.userRank === '1'">
       <!-- <el-upload
@@ -86,7 +93,7 @@
       v-loading="productLoading"
       element-loading-text="Loading..."
       :data="productData.list"
-      :height="450"
+      :height="400"
       border
       stripe
       style="width: 100%"
@@ -182,6 +189,7 @@ const productData: ComputedRef<IProductData> = computed(
  */
 const authorityArr: Array<string> = ["cb", "gys"];
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
+// 所有原始栏目字段-对象
 const allShowColumn = ProColumn.filter(({ prop }) => {
   return userInfo.userRank !== "0" || !authorityArr.includes(prop);
 });
@@ -189,12 +197,29 @@ const allShowColumn = ProColumn.filter(({ prop }) => {
 /**
  * 栏目
  */
-const checkedList: Ref<Array<string>> = ref(
-  allShowColumn.map(({ label }) => label)
+// 所有栏目转为字符串
+const allColumnStringMap: Array<string> = allShowColumn.map(
+  ({ label }) => label
 );
+const checkedList: Ref<Array<string>> = ref(allColumnStringMap);
 const finalColumns: ComputedRef<Array<any>> = computed(() =>
   allShowColumn.filter(({ label }) => checkedList.value.includes(label))
 );
+
+/**
+ * 全选
+ */
+const checkAll = ref(true);
+const isIndeterminate = ref(false);
+const handleCheckAllChange = (flag: boolean) => {
+  checkedList.value = flag ? allColumnStringMap : [];
+  isIndeterminate.value = false;
+};
+const handleCheckedColumnsChange = (value: string[]) => {
+  const { length } = value;
+  checkAll.value = length === allColumnStringMap.length;
+  isIndeterminate.value = length > 0 && length < allColumnStringMap.length;
+};
 
 /**
  * 响应式
