@@ -12,10 +12,11 @@ export default function (userInfo: IUserInfo) {
   const store = useStore();
 
   const defaultSearch: ISearchParamNew = {
-    bindname: "",
-    title: "",
-    xm: "",
-    bz: "",
+    lb: "",
+    cpmc: "",
+    jcxm: "",
+    jcbz: "",
+    city: "",
     pageSize: 20,
     p: 1,
   };

@@ -4,10 +4,10 @@ import { axios } from "../utils";
  * 查询产品列表
  */
 export declare interface ISearchParamNew {
-  bindname: string;
-  title: string;
-  xm: string;
-  bz: string;
+  lb: string;
+  cpmc: string;
+  jcxm: string;
+  jcbz: string;
   city?: string;
   pageSize: number;
   p: number;
@@ -20,27 +20,27 @@ export declare interface IProductNew {
   id?: string;
   xh: string | number;
   bindname: string;
-  title: string;
-  xm: string;
-  bz: string;
+  cpmc: string;
+  jcxm: string;
+  jcbz: string;
   cnas: string;
   cma: string;
   gys: string;
   tel: string;
   city: string;
-  price: string;
-  oprice: string;
-  jc: string;
+  bz: string;
+  cb: string;
+  jcx: string;
   pdbz: string;
   ypxq: string;
-  zxyp: string;
-  testway: string;
-  zhouqitype: string;
-  jiancezhouqi: string;
-  xuzhi: string;
-  istest: string;
-  zhiyangzhouqi: string;
-  zhuyangfei: string;
+  zxypl: string;
+  csyq: string;
+  zqlx: string;
+  jczq: string;
+  jdxz: string;
+  sfzy: string;
+  zyzq: string;
+  ztfy: string;
   [key: string]: any;
 }
 export declare interface IProductNewData {

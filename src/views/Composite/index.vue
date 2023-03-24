@@ -15,7 +15,7 @@
       </el-select> -->
       <el-input
         :disabled="productNewLoading"
-        v-model="searchParam.bindname"
+        v-model="searchParam.lb"
         placeholder="产品类别"
         @change="() => handleSearch()"
       />
@@ -23,7 +23,7 @@
     <el-form-item label="产品名称">
       <el-input
         :disabled="productNewLoading"
-        v-model="searchParam.title"
+        v-model="searchParam.cpmc"
         placeholder="产品名称"
         @change="() => handleSearch()"
       />
@@ -31,7 +31,7 @@
     <el-form-item label="检测项目">
       <el-input
         :disabled="productNewLoading"
-        v-model="searchParam.xm"
+        v-model="searchParam.jcxm"
         placeholder="检测项目"
         @change="() => handleSearch()"
       />
@@ -39,7 +39,7 @@
     <el-form-item label="检测标准">
       <el-input
         :disabled="productNewLoading"
-        v-model="searchParam.bz"
+        v-model="searchParam.jcbz"
         placeholder="检测标准"
         @change="() => handleSearch()"
       />
@@ -148,16 +148,16 @@ const productNewData: ComputedRef<IProductNewData> = computed(
  * @param param0
  */
 const arraySpanMethod = ({ row, column, rowIndex, columnIndex }: any) => {
-  const { customTitle, titleFlagArr, xmFlagArr } = row;
+  const { customTitle, cpmcFlagArr, jcxmFlagArr } = row;
   const { property } = column;
   if (customTitle) {
     return [1, ProColumn.length];
   }
-  if (property === "title") {
-    return handleMerge(rowIndex, titleFlagArr);
+  if (property === "cpmc") {
+    return handleMerge(rowIndex, cpmcFlagArr);
   }
-  if (property === "xm") {
-    return handleMerge(rowIndex, xmFlagArr);
+  if (property === "jcxm") {
+    return handleMerge(rowIndex, jcxmFlagArr);
   }
 };
 
@@ -190,7 +190,7 @@ const tableRowClassName = ({ row }: any) =>
  */
 
 // 成本 | 供应商名称 | 城市 | 接单须知 | 电话
-const authorityArr: Array<string> = ["oprice", "gys", "city", "xuzhi", "tel"];
+const authorityArr: Array<string> = ["cb", "gys", "city", "jdxz", "tel"];
 const userInfo: IUserInfo = inject("userInfo", {} as IUserInfo);
 // 所有原始栏目字段-对象
 const allShowColumn = ProColumn.filter(({ prop }) => {
