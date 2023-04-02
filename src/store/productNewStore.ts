@@ -1,4 +1,5 @@
-import { fetchProductNewApi } from "../api/productNewApi";
+// import { fetchProductNewApi } from "../api/productNewApi";
+import { fetchProductApi } from "../api/productApi";
 import type {
   ISearchParamNew,
   IProductNew,
@@ -35,9 +36,10 @@ export default {
      */
     async fetchProductNew({ commit }: any, payload: ISearchParamNew) {
       commit("setLoading", true);
-      const { flag, response } = (await fetchProductNewApi(payload)) as any;
+      const { flag, response } = (await fetchProductApi(payload)) as any;
       if (flag) {
         const { list, count } = response as IProductNewData;
+
         // 相同的产品类别
         let sameBindname: string = "";
         const bindnameFlagArr: Array<{ index: number; bindname: string }> = [];
@@ -72,36 +74,46 @@ export default {
         // 加结尾，可以合并到底
         cpmcFlagArr.push(list.length);
         jcxmFlagArr.push(list.length);
-        // 额外加一个最后，用于增加合并的产品名称和检查项目
-        bindnameFlagArr.push({ index: list.length + 1, bindname: "" });
 
+        // 用类别来分割成堆
+        let cpmcHeap = [];
+        let jcxmHeap = [];
         // 反向循环增加大标题, 并增加相同名称、项目的行数
         for (let site = bindnameFlagArr.length - 1; site >= 0; site--) {
           const { index, bindname } = bindnameFlagArr[site];
-          if (site !== bindnameFlagArr.length - 1) {
-            list.splice(index, 0, { xh: bindname, customTitle: true } as any);
-          }
-
-          // 反向循环
-          // 每有一个大标题，比大标题行数大（在此大标题以内的）的合并行数就要增加
-          // 后面加过的就不用再看了
-          for (let i = index - 1; i >= 0; i--) {
-            if (cpmcFlagArr[i] >= bindnameFlagArr[site - 1]?.index) {
-              cpmcFlagArr[i] = cpmcFlagArr[i] + site;
-            }
-          }
-          for (let i = index - 1; i >= 0; i--) {
-            if (jcxmFlagArr[i] >= bindnameFlagArr[site - 1]?.index) {
-              jcxmFlagArr[i] = jcxmFlagArr[i] + site;
-            }
-          }
+          // 插入大标题
+          list.splice(index, 0, { xh: bindname, customTitle: true } as any);
+          // 以类别把产品名称分为若干堆，后续增加对应的行数
+          const cpmcIndex = cpmcFlagArr.findIndex((cpmc) => index === cpmc);
+          cpmcHeap.unshift(cpmcFlagArr.splice(cpmcIndex));
+          const jcxmIndex = jcxmFlagArr.findIndex((jcxm) => index === jcxm);
+          jcxmHeap.unshift(jcxmFlagArr.splice(jcxmIndex));
         }
+        // 二位堆增大对应的行数并拉平成一维数组赋回去
+        cpmcFlagArr = cpmcHeap
+          .map((heap, index) => heap.map((h) => h + index + 1))
+          .flat();
+        jcxmFlagArr = jcxmHeap
+          .map((heap, index) => heap.map((h) => h + index + 1))
+          .flat();
 
-        // 补位大标题
-        for (let site = bindnameFlagArr.length - 2; site >= 0; site--) {
+        // 补位大标题的空缺合并
+        // 大标题只有一行，就让它上面的缩1
+        for (let site = 1; site < bindnameFlagArr.length; site++) {
           const { index } = bindnameFlagArr[site];
-          cpmcFlagArr.splice(index, 0, cpmcFlagArr[index] - 1);
-          jcxmFlagArr.splice(index, 0, jcxmFlagArr[index] - 1);
+          const mend = index + site;
+          for (let j = 0; j < cpmcFlagArr.length; j++) {
+            if (cpmcFlagArr[j] > mend) {
+              cpmcFlagArr.splice(j, 0, mend);
+              break;
+            }
+          }
+          for (let j = 0; j < jcxmFlagArr.length; j++) {
+            if (jcxmFlagArr[j] > mend) {
+              jcxmFlagArr.splice(j, 0, mend);
+              break;
+            }
+          }
         }
 
         commit("setProductNew", {
